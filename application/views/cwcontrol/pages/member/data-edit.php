@@ -44,7 +44,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>Citizen ID</label>
@@ -52,9 +52,9 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>Company</label>
@@ -62,9 +62,9 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>Tel</label>
@@ -72,9 +72,9 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>Mobile</label>
@@ -82,7 +82,7 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
 							<div class="row">
 								<div class="col-lg-4">  
@@ -94,7 +94,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>District</label>
@@ -102,9 +102,9 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>Country</label>
@@ -112,9 +112,9 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-4">  
 									<div class="form-group">
 										<label>Province</label>
@@ -122,7 +122,7 @@
 
 									</div>  
 								</div>
-							</div>
+							</div> -->
 
 							<div class="row">
 								<div class="col-lg-4">  

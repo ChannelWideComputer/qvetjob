@@ -14,7 +14,7 @@ class Model_login extends CI_Model {
 				
 		$strUsername = trim($_POST["Username"]);
 		$strPassword = trim($_POST["Password"]);
-		$md_pass = MD5("cwinth2018pcm22@!");
+		$md_pass = MD5("cwinth2018jjg31@!");
 		$md_pass2 = MD5("cw774411");
 		
 		

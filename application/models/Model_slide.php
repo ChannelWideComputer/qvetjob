@@ -41,6 +41,7 @@ class Model_slide extends CI_Model {
 		$query = $this->db->group_start()
 		->like('slide_Images_TH', $word)
 		->group_end()
+		->where('slide_Type','main')
 		->get('tb_slide');
 		
 		$Num_Rows = $query->num_rows();
@@ -50,6 +51,7 @@ class Model_slide extends CI_Model {
 		$query = $this->db->group_start()
 		->like('slide_Images_TH', $word)
 		->group_end()
+		->where('slide_Type','main')
 		->order_by('slide_Sort', 'ASC')->limit($rows_per_page, $start_row)->get('tb_slide');
 
 
@@ -85,9 +87,11 @@ class Model_slide extends CI_Model {
 	public function get_home() 
 	{ 
 
-		$query = $this->db->where('slide_Status', 1)->get('tb_slide')->result_array();
-		$data = $query;
-
+		$query = $this->db->where('slide_Status', 1)->where('slide_Type','main')->order_by('slide_Sort', 'ASC')->get('tb_slide')->result_array();
+		$data = $query
+		;/*echo "<pre>";
+		print_r($data);
+		echo "</pre>";*/
 		return $data;
 
 		
@@ -120,8 +124,13 @@ class Model_slide extends CI_Model {
 		$Sort = $Num_Rows+1;
 
 		$data = array(
-			    //'slide_title_TH' => $_POST["title_TH"],
+			'slide_Title_TH' => $_POST["slide_title_TH"],
+			'slide_Title_EN' => $_POST["slide_title_EN"],
+			'slide_Des_TH' => str_replace("\n", "<br>\n", $_POST["slide_Des_TH"]),
+			'slide_Des_EN' => str_replace("\n", "<br>\n", $_POST["slide_Des_EN"]),
+			'slide_Type'=> 'main',
 			    //'slide_title_EN' => $_POST["title_EN"],
+			// 'slide_Url' => $_POST['slide_Url'],
 			'slide_sort' => $Sort,
 		);
 		
@@ -142,9 +151,9 @@ class Model_slide extends CI_Model {
 			if ($handle->uploaded) {
 				$handle->file_new_name_body = $rename;
 				$handle->image_resize = true;
-				$handle->image_ratio_crop = "T";
-				$handle->image_x = '1160';
-				$handle->image_y = '650';
+				// $handle->image_ratio_crop = "T";
+				$handle->image_x = '1170';
+				$handle->image_y = '544';
 				//$handle->image_ratio_y        = true;
 				//$handle->jpeg_quality = '100';
 				//$handle->image_watermark = '../../class.upload/bg.png';
@@ -162,7 +171,7 @@ class Model_slide extends CI_Model {
 				$this->db->update('tb_slide', $data);
 			}
 		}
-		/*
+		
 		if (!empty($_FILES["slide_Images_min"]["name"])) {
 
 
@@ -194,7 +203,7 @@ class Model_slide extends CI_Model {
 				$this->db->update('tb_slide', $data);
 			}
 			
-		}*/
+		}
 
 		
 		//echo $this->db->last_query();
@@ -218,9 +227,13 @@ class Model_slide extends CI_Model {
 		$id = $this->db->escape_str($this->input->post('id'));
 		
 		$data = array(
-		    //'slide_title_TH' => $_POST["title_TH"],
+			'slide_Title_TH' => $_POST["slide_title_TH"],
+			'slide_Title_EN' => $_POST["slide_title_EN"],
+			'slide_Des_TH' => str_replace("\n", "<br>\n", $_POST["slide_Des_TH"]),
+			'slide_Des_EN' => str_replace("\n", "<br>\n", $_POST["slide_Des_EN"]),
+			'slide_Type'=> 'main',
 		    //'slide_title_EN' => $_POST["title_EN"],
-
+			// 'slide_Url' => $_POST['slide_Url'],
 		);
 
 		$this->db->where('slide_ID', $id);
@@ -240,9 +253,9 @@ class Model_slide extends CI_Model {
 			if ($handle->uploaded) {
 				$handle->file_new_name_body = $rename;
 				$handle->image_resize = true;
-				$handle->image_ratio_crop = "T";
-				$handle->image_x = '1160';
-				$handle->image_y = '650';
+				// $handle->image_ratio_crop = "T";
+				$handle->image_x = '1170';
+				$handle->image_y = '544';
 				//$handle->image_ratio_y        = true;
 				//$handle->jpeg_quality = '100';
 				//$handle->image_watermark = '../../class.upload/bg.png';
@@ -262,7 +275,7 @@ class Model_slide extends CI_Model {
 				unlink("assets/upload/slide/$_POST[slide_Images]");
 			}
 		}
-/*
+
 		if (!empty($_FILES["slide_Images_min"]["name"])) {
 
 
@@ -296,7 +309,7 @@ class Model_slide extends CI_Model {
 
 				unlink("assets/upload/slide/$_POST[slide_Images_min]");
 			}
-		}*/
+		}
 
 
 		//echo $this->db->last_query();
@@ -337,10 +350,10 @@ class Model_slide extends CI_Model {
 			$this->db->set('slide_Sort', 'slide_Sort-1', FALSE);
 			$this->db->where("slide_Sort > '$row[slide_Sort]' ");
 			$this->db->update('tb_slide');
-					
+
 			$this->db->where('slide_ID', $id);
 			$this->db->delete('tb_slide');
-		
+
 			
 		}
 		

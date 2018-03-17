@@ -43,13 +43,13 @@
                                             </div>  
                                         </div>
                                         
-                                        <!-- <div class="col-lg-6">  
+                                        <div class="col-lg-6">  
                                           <div class="form-group">
                                                 <label>ชื่อ (EN)</label>
                                                 <input type="text" class="form-control" name="news_Name_EN" required>
                                                 
                                             </div>  
-                                        </div> -->
+                                        </div>
                            			 </div> 
                                     
                                       <div class="row">
@@ -61,13 +61,13 @@
                                             </div>  
                                         </div>
                                         
-                                       <!--  <div class="col-lg-6">  
+                                        <div class="col-lg-6">  
                                           <div class="form-group">
                                             <label>รายละเอียดย่อ (EN)</label>
                                             <textarea name="news_Des_EN" class="form-control" rows="5"></textarea>
                                                 
                                             </div>  
-                                        </div> -->
+                                        </div>
                            			 </div>
                                      
                                      <div class="row">
@@ -80,7 +80,7 @@
                                         </div>
                            			 </div>
                                    
-                                   <!-- 	<div class="row">
+                                   	<div class="row">
                             			<div class="col-lg-12">  
                                           <div class="form-group">
                                             <label>รายละเอียด (EN)</label>
@@ -89,7 +89,7 @@
                                             </div>  
                                         </div>
                            			 </div>
-                                     -->
+                                    
                                                                                                                      
                                      
                                      <div class="row">
@@ -104,14 +104,16 @@
                            			 </div>
                                  
                                  
-                                 	<div class="row">
+                                 	<!--<div class="row">
                             			<div class="col-lg-12">  
                                           <div class="form-group" id="aaa">
-                                                <label>แกลอรี่ ขนาด 370px * 210px</label>
+                                                <label>แกลอรี่ ขนาด 710px * 485px</label>
                                                 <input  type="file" name="news_gallery[]" id="gallery" multiple>
+                                               
+                                                
                                             </div>  
                                         </div>
-                           			 </div>
+                           			 </div>-->
                                  
                                 
                                   

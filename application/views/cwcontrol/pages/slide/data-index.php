@@ -78,137 +78,140 @@ select {
                 							<td align="center"><input class="ChkBox" type="checkbox"
                 								name="checkboxlist" value="<?php echo $row["slide_ID"];?>"></td>
                 								<td align="center">
-                									<?php if($row["slide_Images_TH"]){?>
+                									<?php if(!empty($row["slide_Images_TH"])){?>
 
                 									<a
-                									href="<?php echo asset_url()?>upload/<?php echo $row["slide_Images_TH"]?>"
+                									href="<?php echo asset_url()?>upload/slide/<?php echo $row["slide_Images_TH"]?>"
                 									data-toggle="lightbox"> <img class="thumbnail"
                 									src="<?php echo asset_url()?>upload/slide/<?php echo $row["slide_Images_TH"]?>"
-                									alt="preview" width="300" style="margin-bottom: 0px;" />
+                									alt="preview" width="550" height="250px";  style="margin-bottom: 0px;" />
                 								</a>
-                								<?php }?>
-                							</td>
+                								<?php }else{?>
+                                                <iframe width="300" height="150" id="myIframe" name="myIframe" src="//www.youtube.com/embed/<?php echo $row["slide_Url"]?>"  frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+                                                
+                                                <?php } ?>
+                                            </td>
 
 
 
-                							<td align="center"><?php echo DateThai_timestame($row["slide_Date"]);?></td>
+                                            <td align="center"><?php echo DateThai_timestame($row["slide_Date"]);?></td>
 
-                							<td align="center"><select class="form-control Sort"
-                								id="<?php echo $row['slide_ID'];?>">
-                								<?php
+                                            <td align="center"><select class="form-control Sort"
+                                                id="<?php echo $row['slide_ID'];?>">
+                                                <?php
 
-                								$query2 = $this->db->get('tb_slide');
-                								$num = $query2->num_rows();
+                                                $query2 = $this->db->get('tb_slide');
+                                                $num = $query2->num_rows();
 
-                								for ($t = 1; $t <= $num; $t ++) {
+                                                for ($t = 1; $t <= $num; $t ++) {
 
-                									?>
-                									<option value="<?php echo $t;?>"
-                										<?php if($row["slide_Sort"] == $t){ echo "selected"; }?>><?php echo $t;?></option>
-                										<?php }?>
-                									</select></td>
+                                                   ?>
+                                                   <option value="<?php echo $t;?>"
+                                                      <?php if($row["slide_Sort"] == $t){ echo "selected"; }?>><?php echo $t;?></option>
+                                                      <?php }?>
+                                                  </select></td>
 
-                									<td align="center"><input type="checkbox" class="status"
-                										data-size="mini" data-on-color="success"
-                										id="<?php echo $row["slide_ID"];?>"
-                										<?php if($row["slide_Status"] == 1){ echo "checked";}?>></td>
-                										<td align="center"><a
-                											href="<?php echo $page_url;?>?type=edit&id=<?php echo $row["slide_ID"]?>"><i
-                											class="fa fa-cog" style="color: #333; font-size: 1.4em"></i></a></td>
-                											<td align="center"><a href="#" class="delete"
-                												id="<?php echo $row['slide_ID'];?>"><i class="fa fa-trash-o"
-                												style="color: #333; font-size: 1.4em"></i></a></td>
-                											</tr>
+                                                  <td align="center"><input type="checkbox" class="status"
+                                                      data-size="mini" data-on-color="success"
+                                                      id="<?php echo $row["slide_ID"];?>"
+                                                      <?php if($row["slide_Status"] == 1){ echo "checked";}?>></td>
+                                                      <td align="center"><a
+                                                         href="<?php echo $page_url;?>?type=edit&id=<?php echo $row["slide_ID"]?>"><i
+                                                         class="fa fa-cog" style="color: #333; font-size: 1.4em"></i></a></td>
+                                                         <td align="center"><a href="#" class="delete"
+                                                            id="<?php echo $row['slide_ID'];?>"><i class="fa fa-trash-o"
+                                                            style="color: #333; font-size: 1.4em"></i></a></td>
+                                                        </tr>
 
-                											<?php }}?>
+                                                        <?php }}?>
 
-                										</tbody>
-                									</table>
-                								</div>
-
-
-
-
-
-
-
-                							</div>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
 
 
 
-                						</div>
-                						<!-- /.row (nested) -->
-
-                						<!-- Pagination -->
-
-                						<div class="row">
-                							<div class="col-lg-6">
-                								<strong>ทั้งหมด <?php echo $pagination["Num_Rows"]?> รายการ  หน้า : <?php echo $pagination["current_page"]?> / <?php echo $pagination["total_pages"]?></strong>
-                							</div>
-                							<div class="col-lg-6">
-                								<nav>
-                									<ul class="pagination">
-
-                										<?php if(isset($page_str)){echo $page_str;} ?>
-
-                									</ul>
-                								</nav>
-                							</div>
-                						</div>
-
-                						<!-- /.Pagination -->
-
-                					</div>
-                					<!-- /.panel-body -->
-                				</div>
-                				<!-- /.panel -->
-                			</div>
-                			<!-- /.col-lg-12 -->
-                		</div>
 
 
-                		<script type="text/javascript">
-                			$(document).on('click', '[data-toggle="lightbox"]', function(event) {
-                				event.preventDefault();
-                				$(this).ekkoLightbox();
-                			});	
-                		</script>
-                		<script type="text/javascript">
-                			$(document).ready(function(){ 
 
-                				$("#selectAll").click(function(){
-                					var checkAll = $(this).prop("checked");
-                					$("input.ChkBox").each(function(){
-                						$(this).prop({"checked":checkAll});
-                					});
-                				});
+                                        </div>
 
-                				$('.delete').click(function(){
 
-                					$('#Modal_delete').modal('show');
 
-                					var ID = $(this).attr("id");
-                					var dataString='id='+ID;
 
-                					$('#btn_delete').click(function(){
-                						jQuery.ajax({
-                							type: "POST",
-                							url: "<?php echo base_url('cwcontrol/'.$page.'/delete');?>",
-                							data: {id:ID},
-                							cache: false,
-                							success: function(html)
-                							{
+                                    </div>
+                                    <!-- /.row (nested) -->
 
-                								location.reload();
+                                    <!-- Pagination -->
 
-                							}
+                                    <div class="row">
+                                     <div class="col-lg-6">
+                                        <strong>ทั้งหมด <?php echo $pagination["Num_Rows"]?> รายการ  หน้า : <?php echo $pagination["current_page"]?> / <?php echo $pagination["total_pages"]?></strong>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <nav>
+                                           <ul class="pagination">
+
+                                              <?php if(isset($page_str)){echo $page_str;} ?>
+
+                                          </ul>
+                                      </nav>
+                                  </div>
+                              </div>
+
+                              <!-- /.Pagination -->
+
+                          </div>
+                          <!-- /.panel-body -->
+                      </div>
+                      <!-- /.panel -->
+                  </div>
+                  <!-- /.col-lg-12 -->
+              </div>
+
+
+              <script type="text/javascript">
+                 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                    event.preventDefault();
+                    $(this).ekkoLightbox();
+                });	
+            </script>
+            <script type="text/javascript">
+             $(document).ready(function(){ 
+
+                $("#selectAll").click(function(){
+                   var checkAll = $(this).prop("checked");
+                   $("input.ChkBox").each(function(){
+                      $(this).prop({"checked":checkAll});
+                  });
+               });
+
+                $('.delete').click(function(){
+
+                   $('#Modal_delete').modal('show');
+
+                   var ID = $(this).attr("id");
+                   var dataString='id='+ID;
+
+                   $('#btn_delete').click(function(){
+                      jQuery.ajax({
+                         type: "POST",
+                         url: "<?php echo base_url('cwcontrol/'.$page.'/delete');?>",
+                         data: {id:ID},
+                         cache: false,
+                         success: function(html)
+                         {
+
+                            location.reload();
+
+                        }
 		});//จบการส่งข้อมูล
-                					});
-                					return false;
-                				});
+                  });
+                   return false;
+               });
 
-                				$('#btn_deleteAll').click(function(){
+                $('#btn_deleteAll').click(function(){
 			//if($("#checkkBoxId").attr("checked")==true)
 			var checkValues = $('input[name=checkboxlist]:checked').map(function()
 			{
@@ -228,9 +231,9 @@ select {
 			
 		});
 
-                				$(".status").bootstrapSwitch({
-                					onSwitchChange: function(event, state) {
-                						var ID = $(this).attr("id");
+                $(".status").bootstrapSwitch({
+                   onSwitchChange: function(event, state) {
+                      var ID = $(this).attr("id");
 				//alert(ID);
 				$.ajax({
 					url: '<?php echo base_url('cwcontrol/'.$page.'/status');?>',
@@ -248,10 +251,10 @@ select {
 
 
 
-                				$('.Sort').change(function(){
+                $('.Sort').change(function(){
 
-                					var ID = $(this).attr("id");
-                					var no = $(this).val();
+                   var ID = $(this).attr("id");
+                   var no = $(this).val();
 			//alert(no);
 			$.ajax({
 				url: '<?php echo base_url('cwcontrol/'.$page.'/Sort');?>',
@@ -267,56 +270,56 @@ select {
 		});
 
 
-                			});
+            });
 
-                		</script>
-
-
-                		<div class="modal fade" id="Modal_delete" tabindex="-1" role="dialog"
-                		aria-labelledby="myModalLabel" aria-hidden="true">
-                		<div class="modal-dialog">
-                			<div class="modal-content">
-                				<div class="panel panel-danger" style="margin-bottom: 0px;">
-                					<div class="panel-heading">
-                						<button type="button" class="close" data-dismiss="modal"
-                						aria-label="Close">
-                						<span aria-hidden="true">&times;</span>
-                					</button>
-                					ลบข้อมูล
-
-                				</div>
-                				<div class="panel-body" align="center">
-                					<p>ยืนยันการลบข้อมูล</p>
-                				</div>
-                				<div class="modal-footer">
-                					<button type="button" id="btn_delete" class="btn btn-danger">ลบข้อมูล</button>
-                				</div>
-                			</div>
-                		</div>
-                	</div>
-                </div>
+        </script>
 
 
-                <div class="modal fade" id="Modal_deleteAll" tabindex="-1" role="dialog"
-                aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                	<div class="modal-content">
-                		<div class="panel panel-danger" style="margin-bottom: 0px;">
-                			<div class="panel-heading">
-                				<button type="button" class="close" data-dismiss="modal"
-                				aria-label="Close">
-                				<span aria-hidden="true">&times;</span>
-                			</button>
-                			ลบข้อมูล
+        <div class="modal fade" id="Modal_delete" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="panel panel-danger" style="margin-bottom: 0px;">
+               <div class="panel-heading">
+                  <button type="button" class="close" data-dismiss="modal"
+                  aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              ลบข้อมูล
 
-                		</div>
-                		<div class="panel-body" align="center">
-                			<p>ยืนยันการลบข้อมูลทั้งหมดที่เลือก</p>
-                		</div>
-                		<div class="modal-footer">
-                			<button type="button" id="btn_deleteAll" class="btn btn-danger">ลบข้อมูล</button>
-                		</div>
-                	</div>
-                </div>
-            </div>
-        </div>
+          </div>
+          <div class="panel-body" align="center">
+           <p>ยืนยันการลบข้อมูล</p>
+       </div>
+       <div class="modal-footer">
+           <button type="button" id="btn_delete" class="btn btn-danger">ลบข้อมูล</button>
+       </div>
+   </div>
+</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="Modal_deleteAll" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+   <div class="modal-content">
+      <div class="panel panel-danger" style="margin-bottom: 0px;">
+         <div class="panel-heading">
+            <button type="button" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        ลบข้อมูล
+
+    </div>
+    <div class="panel-body" align="center">
+     <p>ยืนยันการลบข้อมูลทั้งหมดที่เลือก</p>
+ </div>
+ <div class="modal-footer">
+     <button type="button" id="btn_deleteAll" class="btn btn-danger">ลบข้อมูล</button>
+ </div>
+</div>
+</div>
+</div>
+</div>

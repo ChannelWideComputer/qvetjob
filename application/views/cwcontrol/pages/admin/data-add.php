@@ -1,281 +1,416 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-
-<title></title>
-
-    <?php $this->load->view('cwcontrol/script');?> 
-    
-</head>
-
-<body>
-
-	<div id="wrapper">
-
-		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
-			style="margin-bottom: 0px;">
-            
-            <?php $this->load->view('cwcontrol/header');?>   
-            <!-- /.navbar-top-links -->
-
-			
-            <?php $this->load->view('cwcontrol/left_menu');?>   
-            
-            <!-- /.navbar-static-side -->
-		</nav>
-
-		<div id="page-wrapper">
-
-			<style>
-select {
-	width: auto !important;
-	height: auto !important;
-	padding: 1px !important;
+<style>
+#list1 li{
+  /*display: inline-block;*/
+  float: left;
 }
-
-.pagination {
-	margin: 0px 0 !important;
-	float: right;
-}
-</style>
-			<div class="row">
-				<div class="col-lg-12" style="margin-top: 20px;">
-					<ol class="breadcrumb">
-						<li><a href="<?php echo base_url('cwcontrol/'.$page);?>">สินค้าขายดี</a></li>
-						<li class="active">เพิ่มสินค้าขายดี</li>
-					</ol>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<strong>สินค้าขายดี</strong>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-lg-6">
-									<form class="form-inline" action="<?php echo $page_url;?>"
-										method="post">
-										<div class="form-group">
-											<input type="text" class="form-control" name="Keyword"
-												placeholder="ค้นหา"
-												value="<?php if(isset($word)){echo $word;}?>">
-										</div>
-										<button type="submit" class="btn btn-warning">ค้นหา</button>
-									</form>
-								</div>
-
-								<div class="col-lg-6 text-right">
-									<a data-toggle="modal" href="#Modal_add" class="btn btn-success " id="<?php echo $id;?>">บันทึก สินค้าขายดี</a>
-								</div>
-
-							</div>
+    /*.placeHolder{
+        width: 100%;
+        height: 100%;
+        border: 2px dashed #c2cdda;
+        border-radius: 4px;
+        }    */
+      </style>    
+      <?php if (@$_GET['t'] != 'meta') { ?>
+      <form role="form" action="<?php echo base_url('cwcontrol/'.$page.'/insert');?>" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="method" value="insert"/>
 
 
-							<div class="col-lg-12">
+        <div class="row">
+         <div class="col-lg-12" style="margin-top:20px;">
+          <div class="panel panel-default">
+            <div class="panel-heading">
 
-								<div class="table-responsive">
-
-
-									<table class="table table-striped table-bordered table-hover"
-										style="margin-top: 10px;" width="100%">
-										<thead>
-											<tr>
-												<td width="4%" align="center">ลำดับ</td>
-												<td width="1%" align="center"><input type="checkbox"
-													name="CheckAll" id="selectAll"></td>
-												<td width="25%" align="center">ชื่อ</td>
-												<td width="15%" align="center">หมวดหมู่</td>
-											</tr>
-										</thead>
-										<tbody>
-<?php
-if (! isset($row)) {
-    ?>
-<tr>
-												<td colspan="11" align="center">ไม่พบข้อมูล</td>
-											</tr>
-<?php
-} else {
-    $i = $pagination["start_row"];
-    foreach ($row as $row) {
-        
-        $i ++;
-        ?>    
- <tr>
-												<td align="center"><?php echo $i;?></td>
-												<td align="center"><input class="ChkBox" type="checkbox"
-													name="checkboxlist" value="<?php echo $row["id"];?>"></td>
-												<td align="center"><?php echo $row["product_name_TH"]?></td>
-												<td align="center">
-										<?php
-        $query_cat = $this->db->query('SELECT * FROM `tb_category` WHERE `id` = ' . $row["category_id_head"]);
-        $row_cat = $query_cat->row_array();
-        if (isset($row_cat["category_name_TH"])) {
-            echo $row_cat["category_name_TH"];
-        } else {
-            echo "หมวดหมู่ถูกลบออก กรุณาแก้ไขหมวดหมู่";
-        }
-        
-        ?>
-										</td>
-											</tr>
- 
- <?php }}?>
- 
- </tbody>
-									</table>
-								</div>
+             <strong>เพิ่มข้อมูล</strong>
 
 
-							</div>
+           </div>
+           <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-6">  
+                &nbsp;
+              </div> 
+              <div class="col-lg-6 text-right">  
+                <button type="submit" class="btn btn-success ">บันทึกข้อมูล</button>
+              </div>  
+              <div class="col-lg-12">
 
 
 
+                <div class="row">
+                  <div class="col-lg-4">  
+                    <div class="form-group">
+                      <label>ชื่อเมนู</label>
+                      <input type="text" class="form-control" name="manage_name" required>
 
-						</div>
-						<!-- /.row (nested) -->
+                    </div>  
+                  </div>
 
-						<!-- Pagination -->
+                  <div class="col-lg-4">  
+                    <div class="form-group">
+                      <label>ชื่อไฟล์เมนู</label>
+                      <input type="text" class="form-control" name="manage_page" required>
 
-						<div class="row">
-							<div class="col-lg-6">
-								<strong>ทั้งหมด <?php echo $pagination["Num_Rows"]?> รายการ  หน้า : <?php echo $pagination["current_page"]?> / <?php echo $pagination["total_pages"]?></strong>
-							</div>
-							<div class="col-lg-6">
-								<nav>
-									<ul class="pagination">
-                                    
-                					<?php if(isset($page_str)){echo $page_str;} ?>
-                                    
-                                  </ul>
-								</nav>
-							</div>
-						</div>
+                    </div>  
+                  </div>
 
-						<!-- /.Pagination -->
+                  <div class="col-lg-4">  
+                    <div class="form-group">
+                      <label>ไอคอน</label>
+                      <input type="text" class="form-control" name="manage_icon" >
 
-					</div>
-					<!-- /.panel-body -->
-				</div>
+                    </div>  
+                  </div>
+                </div>
 
 
-				<!-- /.panel -->
-			</div>
-			<!-- /.col-lg-12 -->
-		</div>
 
-		<script type="text/javascript">
-$(document).ready(function(){ 
+              </div>
 
-$("#selectAll").click(function(){
-     var checkAll = $(this).prop("checked");
-     $("input.ChkBox").each(function(){
-          $(this).prop({"checked":checkAll});
-     });
+              <div class="col-lg-12 text-right">  
+                <button type="submit" class="btn btn-success ">บันทึกข้อมูล</button>
+              </div>  
+
+            </div>
+            <!-- /.row (nested) -->
+          </div>
+          <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+      </div>
+      <!-- /.col-lg-12 -->          
+    </div>
+  </form>
+  <?php }else{ ?>
+  <form role="form" action="<?php echo base_url('cwcontrol/'.$page.'/insert_meta');?>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="method" value="insert"/>
+
+
+    <div class="row">
+     <div class="col-lg-12" style="margin-top:20px;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+
+         <strong>เพิ่มข้อมูล</strong>
+
+
+       </div>
+       <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6">  
+            &nbsp;
+          </div> 
+          <div class="col-lg-6 text-right">  
+            <button type="submit" class="btn btn-success ">บันทึกข้อมูล</button>
+          </div>  
+          <div class="col-lg-12">
+
+
+
+            <div class="row">
+              <div class="col-lg-6">  
+                <div class="form-group">
+                  <label>เมต้า หน้า</label>
+                  <input type="text" class="form-control" name="meta_page" required>
+
+                </div>  
+              </div>
+
+              <div class="col-lg-6">  
+                <div class="form-group">
+                  <label>เมต้า ไตเติล</label>
+                  <input type="text" class="form-control" name="meta_titte" required>
+
+                </div>  
+              </div>
+
+              <div class="col-lg-6">  
+                <div class="form-group">
+                  <label>เมต้า รายละอียด</label>
+                  <input type="text" class="form-control" name="meta_description" >
+
+                </div>  
+              </div>
+
+              <div class="col-lg-6">  
+                <div class="form-group">
+                  <label>เมต้า คีเวิร์ด</label>
+                  <input type="text" class="form-control" name="meta_keywords" >
+
+                </div>  
+              </div>
+            </div>
+
+
+
+          </div>
+
+          <div class="col-lg-12 text-right">  
+            <button type="submit" class="btn btn-success ">บันทึกข้อมูล</button>
+          </div>  
+
+        </div>
+        <!-- /.row (nested) -->
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->          
+</div>
+</form>
+<?php } ?>       
+
+
+
+
+
+
+<script type="text/javascript">
+  tinymce.init({
+    selector: 'textarea.ckeditor',
+    menubar : false,
+    force_br_newlines : true,
+    force_p_newlines : false,
+    forced_root_block : '',
+    height: 400, 
+	//width : 1100,
+	plugins: [
+ "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+ "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+ "save table contextmenu directionality emoticons template paste textcolor moxiemanager colorpicker layer textpattern"
+ ],    
+ toolbar: 'insertfile undo redo | table | styleselect fontselect fontsizeselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | print nonbreaking hr emoticons code',
+
+
+});
+</script>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+
+   $("#youtube_Link").keyup(function(e) {
+    var val = $(this).val(),
+    sitesgohere = document.getElementById("myIframe");
+
+    sitesgohere.src = "//www.youtube.com/embed/" + val +"?feature=player_detailpage";
+
+  });
+
+ });
+</script>
+<script>
+  $('#File_TH').filer({
+   addMore: true,
+   maxSize: 10,
+   extensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
+   changeInput: true,
+   showThumbs: true,
+   templates: {
+    box: '<ul class="jFiler-items-list jFiler-items-default"></ul>',
+    item: '<li class="jFiler-item"><div class="jFiler-item-container"><div class="jFiler-item-inner"><div class="jFiler-item-icon pull-left">{{fi-icon}}</div><div class="jFiler-item-info pull-left"><div class="jFiler-item-title" title="{{fi-name}}"><input type="text" class="form-control" name="file_Title_TH[]" placeholder="ชื่อไฟล์ (TH)" style="width:200px;">{{fi-name}}</div><div class="jFiler-item-others"><span>size: {{fi-size2}}</span><span>type: {{fi-extension}}</span><span class="jFiler-item-status">{{fi-progressBar}}</span></div><div class="jFiler-item-assets"><ul class="list-inline"><li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li></ul></div></div></div></div></li>',
+    itemAppend: '<li class="jFiler-item"><div class="jFiler-item-container"><div class="jFiler-item-inner"><div class="jFiler-item-icon pull-left">{{fi-icon}}</div><div class="jFiler-item-info pull-left"><div class="jFiler-item-title">{{fi-name | limitTo:35}}</div><div class="jFiler-item-others"><span>type: {{fi-extension}}</span><span class="jFiler-item-status"></span></div><div class="jFiler-item-assets"><ul class="list-inline"><li><a class="icon-jfi-trash jFiler-item-trash-action" ids=""></a></li></ul></div></div></div></div></li>',
+    progressBar: '<div class="bar"></div>',
+    itemAppendToEnd: true,
+    removeConfirmation: true,
+    _selectors: {
+     list: '.jFiler-items-list',
+     item: '.jFiler-item',
+     progressBar: '.bar',
+     remove: '.jFiler-item-trash-action'
+   }
+ },
+ captions: {
+   removeConfirmation: 'ยืนยันการลบข้อมูล',
+   errors: {
+    filesType: 'เฉพาะไฟล์ pdf doc docx xls xlsx เท่านั้น',
+    filesSize: '{{fi-name}} ขนาดใหญ่เกินไป โปรเลือกไฟล์ขนาดไม่เกิน {{fi-maxSize}}MB.',
+
+  }
+
+},
+
 });
 
-	$('.delete').click(function(){
-		
-		$('#Modal_delete').modal('show');
-		
-		var ID = $(this).attr("id");
-		var dataString='id='+ID;
-		
-		$('#btn_delete').click(function(){
-			jQuery.ajax({
-			type: "POST",
-			url: "<?php echo base_url('cwcontrol/'.$page.'/delete');?>",
-			data: {id:ID},
-			cache: false,
-			success: function(html)
-				{
-					
-					location.reload();
-					
-				}
-		});//จบการส่งข้อมูล
-		});
- 		return false;
-	});
-	
-	$('#btn_add').click(function(){
-			//if($("#checkkBoxId").attr("checked")==true)
-			
-            var checkValues = $('input[name=checkboxlist]:checked').map(function()
-            {
-                return $(this).val();
-            }).get();
-			
-			
-            $.ajax({
-                url: '<?php echo base_url('cwcontrol/'.$page.'/save_best');?>',
-                type: 'post',
-                data: { id: checkValues},
-                success:function(data){
-                    
-                	$('#btn_add').modal('hide')
-                	location.reload();
-                	//alert(data);
-                	if (data=='1') {
-						alert('ทำการเพิ่มสินค้าที่เกี่ยวข้องสำเร็จค่ะ');
-					} else {
-						alert('ทำการเพิ่มสินค้าที่เกี่ยวข้องไม่สำเร็จค่ะ กรุณาเพิ่มใหม่อีกครั้ง');
-					}
-					
-					
+  $('#File_EN').filer({
+   addMore: true,
+   maxSize: 10,
+   extensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
+   changeInput: true,
+   showThumbs: true,
+   templates: {
+    box: '<ul class="jFiler-items-list jFiler-items-default"></ul>',
+    item: '<li class="jFiler-item"><div class="jFiler-item-container"><div class="jFiler-item-inner"><div class="jFiler-item-icon pull-left">{{fi-icon}}</div><div class="jFiler-item-info pull-left"><div class="jFiler-item-title" title="{{fi-name}}"><input type="text" class="form-control" name="file_Title_EN[]" placeholder="ชื่อไฟล์ (EN)" style="width:200px;">{{fi-name}}</div><div class="jFiler-item-others"><span>size: {{fi-size2}}</span><span>type: {{fi-extension}}</span><span class="jFiler-item-status">{{fi-progressBar}}</span></div><div class="jFiler-item-assets"><ul class="list-inline"><li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li></ul></div></div></div></div></li>',
+    itemAppend: '<li class="jFiler-item"><div class="jFiler-item-container"><div class="jFiler-item-inner"><div class="jFiler-item-icon pull-left">{{fi-icon}}</div><div class="jFiler-item-info pull-left"><div class="jFiler-item-title">{{fi-name | limitTo:35}}</div><div class="jFiler-item-others"><span>type: {{fi-extension}}</span><span class="jFiler-item-status"></span></div><div class="jFiler-item-assets"><ul class="list-inline"><li><a class="icon-jfi-trash jFiler-item-trash-action" ids=""></a></li></ul></div></div></div></div></li>',
+    progressBar: '<div class="bar"></div>',
+    itemAppendToEnd: true,
+    removeConfirmation: true,
+    _selectors: {
+     list: '.jFiler-items-list',
+     item: '.jFiler-item',
+     progressBar: '.bar',
+     remove: '.jFiler-item-trash-action'
+   }
+ },
+ captions: {
+   removeConfirmation: 'ยืนยันการลบข้อมูล',
+   errors: {
+    filesType: 'เฉพาะไฟล์ pdf doc docx xls xlsx เท่านั้น',
+    filesSize: '{{fi-name}} ขนาดใหญ่เกินไป โปรเลือกไฟล์ขนาดไม่เกิน {{fi-maxSize}}MB.',
 
-                }
-            });
-			
-	});
-		
-			
-			
-	});
+  }
 
+},
+
+});	
+
+  $('.Images').filer({
+   limit: 1,
+   showThumbs: true,
+   templates: {
+    box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
+    item: '<li class="jFiler-item">' +
+    '<div class="jFiler-item-container">' +
+    '<div class="jFiler-item-inner">' +
+    '<div class="jFiler-item-thumb">' +
+    '<div class="jFiler-item-status"></div>' +
+    '<div class="jFiler-item-info">' +
+    '<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>' +
+    '<span class="jFiler-item-others">{{fi-size2}}</span>' +
+    '</div>' +
+    '{{fi-image}}' +
+    '</div>' +
+    '<div class="jFiler-item-assets jFiler-row">' +
+    '<ul class="list-inline pull-left">' +
+    '<li>{{fi-progressBar}}</li>' +
+    '<li><span class="jFiler-item-others">{{fi-icon}}</span></li>' +
+    '</ul>' +
+    '<ul class="list-inline pull-right">' +
+    '<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>' +
+    '</ul>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</li>',
+    itemAppend: '<li class="jFiler-item">' +
+    '<div class="jFiler-item-container">' +
+    '<div class="jFiler-item-inner">' +
+    '<div class="jFiler-item-thumb">' +
+    '<div class="jFiler-item-status"></div>' +
+    '<div class="jFiler-item-info">' +
+    '<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>' +
+    '<span class="jFiler-item-others">{{fi-size2}}</span>' +
+    '</div>' +
+    '{{fi-image}}' +
+    '</div>' +
+    '<div class="jFiler-item-assets jFiler-row">' +
+    '<ul class="list-inline pull-left">' +
+    '<li><span class="jFiler-item-others">{{fi-icon}}</span></li>' +
+    '</ul>' +
+    '<ul class="list-inline pull-right">' +
+    '<li><!--<a class="icon-jfi-trash jFiler-item-trash-action" id="{{fi-name}}"></a>--></li>' +
+    '</ul>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</li>',
+    progressBar: '<div class="bar"></div>',
+    itemAppendToEnd: false,
+    removeConfirmation: true,
+    _selectors: {
+      list: '.jFiler-items-list',
+      item: '.jFiler-item',
+      progressBar: '.bar',
+      remove: '.jFiler-item-trash-action'
+    }
+  },		
+  captions: {
+   removeConfirmation: 'ยืนยันการลบข้อมูล',
+
+ },
+});
+  $('#gallery').filer({
+   addMore: true,
+   showThumbs: true,
+   templates: {
+    box: '<ul id="list1" class="jFiler-items-list jFiler-items-grid sort"></ul>',
+    item: '<li class="jFiler-item">' +
+    '<div class="jFiler-item-container">' +
+    '<div class="jFiler-item-inner">' +
+    '<div class="jFiler-item-thumb">' +
+    '<div class="jFiler-item-status"></div>' +
+    '<div class="jFiler-item-info">' +
+    '<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>' +
+    '<span class="jFiler-item-others">{{fi-size2}}</span>' +
+    '</div>' +
+    '{{fi-image}}' +
+    '</div>' +
+    '<div class="jFiler-item-assets jFiler-row">' +
+    '<ul class="list-inline pull-left">' +
+    '<li>{{fi-progressBar}}</li>' +
+    '<li><span class="jFiler-item-others">{{fi-icon}}</span></li>' +
+    '</ul>' +
+    '<ul class="list-inline pull-right">' +
+    '<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li><input type="hidden" name="sort[]" id="sort" />' +
+    '</ul>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</li>',
+    itemAppend: '<li class="jFiler-item">' +
+    '<div class="jFiler-item-container">' +
+    '<div class="jFiler-item-inner">' +
+    '<div class="jFiler-item-thumb">' +
+    '<div class="jFiler-item-status"></div>' +
+    '<div class="jFiler-item-info">' +
+    '<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>' +
+    '<span class="jFiler-item-others">{{fi-size2}}</span>' +
+    '</div>' +
+    '{{fi-image}}' +
+    '</div>' +
+    ' <div class="jFiler-item-assets jFiler-row">' +
+    '<ul class="list-inline pull-left">' +
+    '<li><span class="jFiler-item-others">{{fi-icon}}</span></li>' +
+    '</ul>' +
+    '<ul class="list-inline pull-right">' +
+    '<li><a class="icon-jfi-trash jFiler-item-trash-action" idg="{{fi-name}}"></a></li><input type="hidden" name="sort-{{fi-name}}" id="sort" /><input type="hidden" name="gallery_ID[]" id="sortid" value="{{fi-name}}">' +
+    '</ul>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</li>',
+    progressBar: '<div class="bar"></div>',
+    itemAppendToEnd: true,
+    removeConfirmation: true,
+    _selectors: {
+      list: '.jFiler-items-list',
+      item: '.jFiler-item',
+      progressBar: '.bar',
+      remove: '.jFiler-item-trash-action'
+    }
+  },
+  files: [{
+
+  }],
+  afterShow: function(el){
+    saveOrder();
+  },
+  captions: {
+    feedback2: "files were chosen",
+    removeConfirmation: 'ยืนยันการลบข้อมูล',
+
+  },
+});	
 </script>
 
+<script type="text/javascript">
+  $("#list1").dragsort({ dragSelector: "img", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<li class='placeHolder'><div></div></li>" });
 
+  function saveOrder() {
+    $("#list1.sort").find("input#sort").each(function(k,v){
+      $(v).val(k+1);
+    });
+    $("#aaa").find(".jFiler-input-caption").find("span").text($("#list1.sort").find("input#sort").length+" files were chosen");
 
-		<div class="modal fade" id="Modal_add" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="panel panel-success" style="margin-bottom: 0px;">
-						<div class="panel-heading">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							สินค้าขายดี
-
-						</div>
-						<div class="panel-body" align="center">
-							<p>เพิ่มข้อมูลสินค้าขายดี</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" id="btn_add" class="btn btn-success">เพิ่มข้อมูล</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /.row -->
-	</div>
-	<!-- /#page-wrapper -->
-<?php $this->load->view('cwcontrol/footer');?>
-    </div>
-	<!-- /#wrapper -->
-
-
-
-
-
-</body>
-</html>
+  };
+</script>

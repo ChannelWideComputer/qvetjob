@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title></title>
+    <title>Cwcontrol</title>
 
     <?php $this->load->view('cwcontrol/script');?> 
     
@@ -43,7 +43,6 @@
 			}elseif($this->input->get('type') == "edit"){
 				
 				$this->load->view('cwcontrol/pages/'.$page.'/data-edit');
-				
 			}else{
 				
 				$this->load->view('cwcontrol/pages/'.$page.'/data-index');

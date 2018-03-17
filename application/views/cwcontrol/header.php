@@ -6,7 +6,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Control Panel</a>
+                <a class="navbar-brand" href="<?= base_url()."cwcontrol/home" ?>">Control Panel</a>
             </div>
             <!-- /.navbar-header -->
 

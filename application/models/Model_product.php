@@ -37,13 +37,14 @@ class Model_product extends CI_Model {
 		$start_row = paging_start_row($current_page, $rows_per_page);
 		
 		
-		//$this->db->start_cache();
-		//$this->db->join('tb_category', 'tb_category.category_ID = tb_product.category_ID', 'left');
-		//$this->db->group_start();
-		//$this->db->like('product_Name_TH', $word)->or_like('product_Name_TH', $word);
-		//$this->db->or_like('category_Name_TH', $word)->or_like('category_Name_EN', $word);
-		//$this->db->group_end();
-		//$this->db->stop_cache();
+		$this->db->start_cache();
+		$this->db->join('tb_news', 'tb_news.news_ID = tb_product.category_ID', 'left');
+		$this->db->group_start();
+		$this->db->like('product_Name_TH', $word)->or_like('product_Name_TH', $word);
+		$this->db->or_like('news_Name_TH', $word)->or_like('news_Name_EN', $word);
+		$this->db->group_end();
+		$this->db->order_by('tb_product.category_ID','ASC');
+		$this->db->stop_cache();
 
 		$query = $this->db->get('tb_product');
 
@@ -66,7 +67,6 @@ class Model_product extends CI_Model {
 			$data["product"] = $query->result_array();
 		}
 
-
 		$data["pagination"] = array(
 			'start_row' => $start_row,
 			'Num_Rows' => $Num_Rows,
@@ -81,11 +81,11 @@ class Model_product extends CI_Model {
 		}
 
 		
-		/*echo "<pre>";
-		print_r($data);
-		echo "</pre>";
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
 		
-		echo $this->db->last_query();*/
+		// echo $this->db->last_query();
 		if (isset($data)) {
 			return $data;
 		}
@@ -96,6 +96,7 @@ class Model_product extends CI_Model {
 	
 	public function get_home($home = null) 
 	{ 
+
 		
 		if($home == "home"){
 			$this->db->where('product_Home', 1);
@@ -103,41 +104,70 @@ class Model_product extends CI_Model {
 
 		}else{
 
-			$rows_per_page = 2;
+			$rows_per_page = 12;
 			$current_page = 1;
 			$page_range = 5;
 			$qry_string = "";
-			$page_url = base_url('product/'.$home);
+			$page_url = base_url('product');
 
 			if($this->input->get_post('page')) {
 				$current_page = $this->input->get_post('page');
 			}
+			if(!empty($this->input->get_post('Keyword'))){
 
-			if(!empty($this->input->get_post('c'))){
+				$word = $this->input->get_post('Keyword');
+				$qry_string .= "Keyword=$word";
+				$data["word"] = $word;
+			}else{	
+
+				$word = "";
+			}
+
+			/*if(!empty($_GET['b'])){
+				$b = $_GET['b'];
+				$qry_string .= "b=$b";
+				$data["b"] = $b;
+			}else{	
+				$b = "";
+			}*/
+			/*if(!empty($this->input->get_post('c'))){
 
 				$c = $this->input->get_post('c');
-				$qry_string .= "c=$c";
+				$qry_string .= "b=$b&c=$c";
 				$data["c"] = $c;
 			}else{	
 				$c = "";
-			}
+			}*/
 
 			$start_row = paging_start_row($current_page, $rows_per_page);
 
+			
+
 			$this->db->start_cache();
-			//$this->db->join('tb_category', 'tb_category.category_ID = tb_product.category_ID', 'left');
-			//$this->db->where('tb_product.category_ID', $home);
+			$this->db->join('tb_news', 'tb_news.news_ID = tb_product.category_ID', 'left');
+			/*if (!empty($_GET['b'])) {
+				$this->db->where('tb_product.brand_ID', $b);
+			}*/
+
+			if (!empty($word)) {
+				$this->db->like('product_Name_TH', $word)->or_like('product_Name_EN', $word);
+				$this->db->or_like('news_Name_TH', $word)->or_like('news_Name_EN', $word);
+			}
+			
+
 			$this->db->where('product_Status', 1);
+			/*
 			if(!empty($c)){ 
 				$this->db->where('tb_product.category_ID', $c);
-			}
+			}*/
+			// $this->db->order_by('tb_category.category_Sort','ASC');
+
 			$this->db->order_by('product_Sort', 'ASC');
-			
+
 			$this->db->stop_cache();
 
 			$query = $this->db->get('tb_product');
-			//echo $this->db->last_query();
-
+			// echo $this->db->last_query();
 			$Num_Rows = $query->num_rows();
 			$total_pages = paging_total_pages($Num_Rows, $rows_per_page);
 
@@ -148,8 +178,7 @@ class Model_product extends CI_Model {
 			$page_str = paging_pagenum($current_page, $total_pages, $page_range, $qry_string, $page_url,$themePaging);
 
 			$this->db->limit($rows_per_page, $start_row);
-			$query = $this->db->/*where('tb_product.category_ID', $home)->*/order_by('product_Sort', 'ASC')->get('tb_product','5','0');
-			$query2 = $this->db->/*where('tb_product.category_ID', $home)->*/order_by('product_Sort', 'ASC')->get('tb_product','2','0');
+			
 			$this->db->flush_cache();
 
 			//
@@ -157,7 +186,7 @@ class Model_product extends CI_Model {
 
 			if($Num_Rows > 0 ) {
 				$data["product"] = $query->result_array();
-				//$data["product_M"] = $query2->result_array();
+				
 			}
 
 
@@ -167,30 +196,12 @@ class Model_product extends CI_Model {
 
 			}
 
-
-			/*$query = $this->db->get_where('tb_category', array('category_ID' => $home));
-
-			foreach ($query->result_array() as $row){
-
-
-				$data["category"] = array(
-					'category_ID' => $row["category_ID"],
-					'category_Name_TH' => $row["category_Name_TH"],
-					'category_Name_EN' => $row["category_Name_EN"],
-
-				);
-
-
-			}*/
-
-
-
 		}
-		//echo "<pre>";
-		//print_r($data);
-		//echo "</pre>";
-		//echo $this->db->last_query();
-		//echo "<pre>";
+		// echo "<pre>";
+		// print_r($data['product']);
+		// echo "</pre>";
+		// echo $this->db->last_query();
+		// echo "<pre>";
 		//print_r($home);
 		if (isset($data)) {
 			return $data;
@@ -201,7 +212,7 @@ class Model_product extends CI_Model {
 	public function get_detail($id = null) 
 	{ 
 
-		
+
 		if($id){
 			$id = $this->db->escape_str($id);	
 		}else{
@@ -213,66 +224,68 @@ class Model_product extends CI_Model {
 		foreach ($query->result_array() as $row){
 
 
-			$data["detail"] = array(
+			$data["product"] = array(
 				'product_ID' => $row["product_ID"],
 				'product_Name_TH' => $row["product_Name_TH"],
-				//'product_Name_EN' => $row["product_Name_EN"],
-				'product_Detail_TH' => $row["product_Detail_TH"],
+				'product_Name_EN' => $row["product_Name_EN"],
+				// 'product_Detail_TH' => $row["product_Detail_TH"],
 				// 'product_Detail_EN' => $row["product_Detail_EN"],
 				'product_Des_TH' => $row["product_Des_TH"],
-				// 'product_Des_EN' => $row["product_Des_EN"],
-				// 'product_Des2_TH' => $row["product_Des2_TH"],
-				// 'product_Des2_EN' => $row["product_Des2_EN"],
-				// 'product_Des3_TH' => $row["product_Des3_TH"],
-				// 'product_Des3_EN' => $row["product_Des3_EN"],
-					//'product_Special_TH' => $row["product_Special_TH"],
-					//'product_Special_EN' => $row["product_Special_EN"],
-				'product_Clip' => $row["product_Clip"],
+				'product_Des_EN' => $row["product_Des_EN"],
+				'product_Des2_TH' => $row["product_Des2_TH"],
+				'product_Des2_EN' => $row["product_Des2_EN"],
+				'product_Des3_TH' => $row["product_Des3_TH"],
+				'product_Des3_EN' => $row["product_Des3_EN"],
+				// 'product_Special_TH' => $row["product_Special_TH"],
+				// 'product_Special_EN' => $row["product_Special_EN"],
 				'product_Images' => $row["product_Images"],
-				'product_Images2' => $row["product_Images2"],
-				// 'product_Images_M' => $row["product_Images_M"],
-				// 'product_Images_M2' => $row["product_Images_M2"],
-				// 'category_ID' => $row["category_ID"],
+				// 'product_Clip' => $row["product_Clip"],
+				// 'product_Title' => $row["product_Title"],
+			// 'brand_ID' => $row["brand_ID"],////ยี้ห้อ
+			// 'category_ID' => $row["category_ID"],//ประเภทใช้งาน
+			// 'category2_ID' => $row["category2_ID"],//การใช้งาน
+			// 'product_Sale' => $row["product_Sale"],
+			// 'product_Price' => $row["product_Price"],
 			);
 			//echo $this->db->last_query();die();
-			/*
-			$query2 = $this->db->where('product_ID', $row["product_ID"])->where('file_Title_TH !=', '')->get('tb_file');
-			
+
+			$query2 = $this->db->where('product_ID', $row["product_ID"])->where('file_Title_TH !=', '')->order_by('file_ID','DESC')->get('tb_file');
+
 			foreach ($query2->result_array() as $row2){
-				
-				$data["product"]["product_file_TH"][] = array(
+
+				$data["product_file_TH"][] = array(
 					'file_ID' => $row2["file_ID"],
 					'file_Title_TH' => $row2["file_Title_TH"],
-					'file_Name' => $row2["file_Name"],
+					'file_name_TH' => $row2["file_name_TH"],
 					'file_Type' => $row2["file_Type"],
 					'file_Size' => $row2["file_Size"],
 					'file_Date' => $row2["file_Date"],
-				
+
 				);
 
 			}
-			
-			$query4 = $this->db->where('product_ID', $row["product_ID"])->where('file_Title_EN !=', '')->get('tb_file');
-			
-			foreach ($query4->result_array() as $row4){
-				
-				$data["product"]["product_file_EN"][] = array(
-					'file_ID' => $row4["file_ID"],
-					'file_Title_EN' => $row4["file_Title_EN"],
-					'file_Name' => $row4["file_Name"],
-					'file_Type' => $row4["file_Type"],
-					'file_Size' => $row4["file_Size"],
-					'file_Date' => $row4["file_Date"],
-				
-				);
+			// echo $this->db->last_query();die();
+			// $query4 = $this->db->where('product_ID', $row["product_ID"])->where('file_Title_EN !=', '')->order_by('file_ID','DESC')->get('tb_file');
 
-			}*/
-			
-			$query3 = $this->db->where('product_ID', $row["product_ID"])->order_by('gallery_Sort', 'ASC')->get('tb_product_gallery');
+			// foreach ($query4->result_array() as $row4){
+
+			// 	$data["product_file_EN"][] = array(
+			// 		'file_ID' => $row4["file_ID"],
+			// 		'file_Title_EN' => $row4["file_Title_EN"],
+			// 		'file_name_EN' => $row4["file_name_EN"],
+			// 		'file_Type' => $row4["file_Type"],
+			// 		'file_Size' => $row4["file_Size"],
+			// 		'file_Date' => $row4["file_Date"],
+
+			// 	);
+
+			// }
+
+			$query3 = $this->db->where('ID', $row["product_ID"])->where('Type', 'product')->order_by('gallery_Sort', 'ASC')->get('tb_gallery');
 			//$query3 = $this->db->get_where('tb_product_gallery', array('product_ID' => $row["product_ID"]),$this->db->order_by('gallery_Sort', 'ASC'));
-			
+
 			foreach ($query3->result_array() as $row3){
-				
+
 				$data["product"]["product_gallery"][] = array(
 					'gallery_ID' => $row3["gallery_ID"],
 					'gallery_Images' => $row3["gallery_Images"],
@@ -281,26 +294,41 @@ class Model_product extends CI_Model {
 				);
 
 			}
+			// $query9 = $this->db->where('product_ID', $row["product_ID"])->where('gallery_Images',"")->order_by('gallery_Sort', 'ASC')->get('tb_product_gallery');
+			// //$query3 = $this->db->get_where('tb_product_gallery', array('product_ID' => $row["product_ID"]),$this->db->order_by('gallery_Sort', 'ASC'));
+
+			// foreach ($query9->result_array() as $row9){
+
+			// 	$data["product"]["product_gallery2"][] = array(
+			// 		'gallery_ID' => $row9["gallery_ID"],
+			// 		'gallery_Images2' => $row9["gallery_Images2"],
+			// 		'gallery_Sort' => $row9["gallery_Sort"],
+
+			// 	);
+
+			// }
+
+
+			// $query5 = $this->db->get_where('tb_category', array('category_ID' => $row["category_ID"]));
+
+			// foreach ($query5->result_array() as $row5){
+
+
+			// 	$data["category"] = array(
+			// 		'category_ID' => $row5["category_ID"],
+			// 		'category_Name_TH' => $row5["category_Name_TH"],
+			// 		'category_Name_EN' => $row5["category_Name_EN"],
+
+			// 	);
+
+
+			// }
+
 			
-			/*
-			$query5 = $this->db->get_where('tb_category', array('category_ID' => $row["category_ID"]));
-
-			foreach ($query5->result_array() as $row5){
-
-
-				$data["category"] = array(
-					'category_ID' => $row5["category_ID"],
-					'category_Name_TH' => $row5["category_Name_TH"],
-					'category_Name_EN' => $row5["category_Name_EN"],
-
-				);
-
-
-			}*/
-			
-			/*
-			$this->db->where('category_ID', $row["category_ID"]);
+			// $this->db->where('category_ID', $row["category_ID"]);
 			$this->db->where('product_ID !=', $row["product_ID"]);
+			$this->db->where('category_ID', $row["category_ID"]);
+			$this->db->where('product_Status ', 1);
 			$query6 = $this->db->get('tb_product');
 			foreach ($query6->result_array() as $row6){
 				
@@ -308,17 +336,19 @@ class Model_product extends CI_Model {
 					'product_ID' => $row6["product_ID"],
 					'product_Name_TH' => $row6["product_Name_TH"],
 					'product_Name_EN' => $row6["product_Name_EN"],
-					'product_Detail_TH' => $row6["product_Detail_TH"],
-					'product_Detail_EN' => $row6["product_Detail_EN"],
-					'product_Special_TH' => $row6["product_Special_TH"],
-					'product_Special_EN' => $row6["product_Special_EN"],
-					'product_Clip' => $row6["product_Clip"],
+					// 'product_Detail_TH' => $row6["product_Detail_TH"],
+					// 'product_Detail_EN' => $row6["product_Detail_EN"],
+					// 'product_Special_TH' => $row6["product_Special_TH"],
+					// 'product_Special_EN' => $row6["product_Special_EN"],
+					// 'product_Clip' => $row6["product_Clip"],
 					'product_Images' => $row6["product_Images"],
-					'category_ID' => $row6["category_ID"],
-				
+					// 'category_ID' => $row6["category_ID"],
+					// 'product_Sale' => $row6["product_Sale"],
+					// 'product_Price' => $row6["product_Price"],
+
 				);
 
-			}*/
+			}
 			
 			
 			
@@ -327,9 +357,9 @@ class Model_product extends CI_Model {
 		}
 		
 		
-		// echo "<pre>";
-		// print_r($data);
-		// echo "</pre>";
+		/*echo "<pre>";
+		print_r($data['product_file_EN']);
+		echo "</pre>";*/
 		
 		if (isset($data)) {
 			return $data;
@@ -376,24 +406,40 @@ class Model_product extends CI_Model {
 	
 	public function insert() 
 	{ 
+		// echo "<pre>";
+		// print_r($_POST);
+		// echo "<pre>";
 		
-		
-		
-		$query = $this->db->get('tb_product');
+		$query = $this->db->/*where('category_ID',$_POST["category_ID"])->*/get('tb_product');
 		$Num_Rows = $query->num_rows();
+		
 		$Sort = $Num_Rows+1;
-
+		// echo $Sort;
+		// echo $this->db->last_query();
+		// die();
 		$data = array(
 			'product_Name_TH' => $_POST["product_Name_TH"],
-			// 'product_Name_EN' => $_POST["product_Name_EN"],
-			'product_Detail_TH' => $_POST["product_Detail_TH"],
+			'product_Name_EN' => $_POST["product_Name_EN"],
+			// 'product_Detail_TH' => $_POST["product_Detail_TH"],
+			// 'product_Detail_EN' => $_POST["product_Detail_EN"],
 			'product_Des_TH' => $_POST["product_Des_TH"],
-			//'product_Detail_EN' => $_POST["product_Detail_EN"],
-			//'product_Special_TH' => $_POST["product_Special_TH"],
-			//'product_Special_EN' => $_POST["product_Special_EN"],
-			'product_Clip' => $_POST["product_Clip"],
+			'product_Des_EN' => $_POST["product_Des_EN"],
+			'product_Des2_TH' => $_POST["product_Des2_TH"],
+			'product_Des2_EN' => $_POST["product_Des2_EN"],
+			'product_Des3_TH' => $_POST["product_Des3_TH"],
+			'product_Des3_EN' => $_POST["product_Des3_EN"],
+			// 'product_Price' => $_POST["product_Price"],
+			// 'product_Sale' => $_POST["product_Sale"],
+			// 'product_Des3_EN' => $_POST["product_Des3_EN"],
+			// 'product_Special_TH' => $_POST["product_Special_TH"],
+			// 'product_Special_EN' => $_POST["product_Special_EN"],
+			// 'product_Title' => $_POST["product_Title"],
+			// 'product_Clip' => $_POST["product_Clip"],
 			'product_Sort' => $Sort,
-			//'category_ID' => $_POST["category_ID"],
+			// 'brand_ID' => $_POST["brand_ID"],////ยี้ห้อ
+			// 'category_ID' => $_POST["category_ID"],//ประเภทใช้งาน
+			// 'category2_ID' => $_POST["category2_ID"],//การใช้งาน
+			
 
 		);
 		
@@ -402,13 +448,13 @@ class Model_product extends CI_Model {
 
 		
 		
-		if ($_FILES["product_Images"]["name"] != "") {
+		if (@$_FILES["product_Images"]["name"] != "") {
 
 
 			$rename = "PHOTO_product_" . date("d-m-Y_Hms");
 
 
-			$handle = new upload($_FILES["product_Images"]);
+			$handle = new upload(@$_FILES["product_Images"]);
 
 			// if ($handle->uploaded) {					
 			// 	$handle->file_new_name_body = $rename;
@@ -423,8 +469,8 @@ class Model_product extends CI_Model {
 				$handle->file_new_name_body = $rename;
 				$handle->image_resize = true;
 					//$handle->image_ratio_crop = "T";
-				$handle->image_x = '555';
-				$handle->image_y = '320';
+				$handle->image_x = '360';
+				$handle->image_y = '240';
 					//$handle->image_ratio_y        = true;
 					//$handle->jpeg_quality = '100';
 					//$handle->image_watermark = '../../class.upload/bg.png';
@@ -444,124 +490,84 @@ class Model_product extends CI_Model {
 
 			
 		}
-		if (@$_FILES["product_Images2"]["name"] != "") {
+
+		
+		$files = array();
+		foreach (@$_FILES['product_gallery'] as $k => $l)
+		{
+			foreach ($l as $i => $v)
+			{
+				if (!array_key_exists($i, $files))
+					$files[$i] = array();
+				$files[$i][$k] = $v;
+				$imagename = @$_FILES['product_gallery']['name'];
+			}
+		}
+
+		$filesnum = count($files)-2;
+		foreach ($files as $file) {
+
+			$filenamex = "gallery_product_".date("d-m-Y_Hms");
 
 
-			$rename2 = "PHOTO_product2_" . date("d-m-Y_Hms");
+			$handle = new upload($file);
 
 
-			$handle = new upload(@$_FILES["product_Images2"]);
 
+			if ($handle->uploaded) {					
+				$handle->file_new_name_body = $filenamex;
+				$handle->file_name_body_pre = 'full_';
+				$handle->process('assets/upload/gallery');
+			}
 
 			if ($handle->uploaded) {
-				$handle->file_new_name_body   = $rename2;
+				$handle->file_new_name_body   = $filenamex;
 				$handle->image_resize         = true;
 				//$handle->image_ratio_crop     = "T";
-				$handle->image_x              = '555';
-				$handle->image_y       		  = '320';
+				$handle->image_x              = '1259';
+				$handle->image_y       		  = '840';
 				//$handle->image_ratio_y        = true;
 				//$handle->jpeg_quality = '100';
 
-				$handle->process('assets/upload/product');
+				$handle->process('assets/upload/gallery');
+				$image_name_thumb =  $handle->file_dst_name;
+
+				if ($handle->processed) {
+
+					$data = array(
+						'gallery_Images' => $image_name_thumb,
+						'gallery_Sort' => $_POST["sort"][$filesnum],
+						'Type' => 'product',
+						'ID' => $id,
+					);
+					$this->db->insert('tb_gallery', $data);						
+
+				}
+
 			}
-
-			if ($handle->processed) {
-				$photo_name2 = $handle->file_dst_name;
-			}
-
-			$data = array(
-				'product_Images2' => $photo_name2,
-			);
-			$this->db->where('product_ID', $id);
-			$this->db->update('tb_product', $data);
-
-			
+			$filesnum--;
 		}
 
-		// if (@$_FILES["PHOTO_mobie_min"]["name"] != "") {
-
-
-		// 	$rename3 = "PHOTO_M_" . date("d-m-Y_Hms");
-
-
-		// 	$handle = new upload(@$_FILES["PHOTO_mobie_min"]);
-
-
-		// 	if ($handle->uploaded) {
-		// 		$handle->file_new_name_body   = $rename3;
-		// 		$handle->image_resize         = true;
-		// 		//$handle->image_ratio_crop     = "T";
-		// 		$handle->image_x              = '474';
-		// 		$handle->image_y       		  = '250';
-		// 		//$handle->image_ratio_y        = true;
-		// 		//$handle->jpeg_quality = '100';
-
-		// 		$handle->process('assets/upload/product');
-		// 	}
-
-		// 	if ($handle->processed) {
-		// 		$photo_name3 = $handle->file_dst_name;
-		// 	}
-
-		// 	$data = array(
-		// 		'product_Images_M' => $photo_name3,
-		// 	);
-		// 	$this->db->where('product_ID', $id);
-		// 	$this->db->update('tb_product', $data);
-
-			
-		// }
-
-		// if (@$_FILES["PHOTO_mobie_min2"]["name"] != "") {
-
-
-		// 	$rename4 = "PHOTO_M_2_" . date("d-m-Y_Hms");
-
-
-		// 	$handle = new upload(@$_FILES["PHOTO_mobie_min2"]);
-
-
-		// 	if ($handle->uploaded) {
-		// 		$handle->file_new_name_body   = $rename4;
-		// 		$handle->image_resize         = true;
-		// 		//$handle->image_ratio_crop     = "T";
-		// 		$handle->image_x              = '474';
-		// 		$handle->image_y       		  = '250';
-		// 		//$handle->image_ratio_y        = true;
-		// 		//$handle->jpeg_quality = '100';
-
-		// 		$handle->process('assets/upload/product');
-		// 	}
-
-		// 	if ($handle->processed) {
-		// 		$photo_name4 = $handle->file_dst_name;
-		// 	}
-
-		// 	$data = array(
-		// 		'product_Images_M2' => $photo_name4,
-		// 	);
-		// 	$this->db->where('product_ID', $id);
-		// 	$this->db->update('tb_product', $data);
-
-			
-		// }
-		
-		// $files = array();
-		// foreach ($_FILES['product_gallery'] as $k => $l)
+		// $file = array();
+		// foreach ($_FILES['product_gallery2'] as $a => $b)
 		// {
-		// 	foreach ($l as $i => $v)
+		// 	foreach ($b as $c => $d)
 		// 	{
-		// 		if (!array_key_exists($i, $files))
-		// 			$files[$i] = array();
-		// 		$files[$i][$k] = $v;
-		// 		$imagename = $_FILES['product_gallery']['name'];
+		// 		if (!array_key_exists($c, $file))
+		// 			$file[$c] = array();
+		// 		$file[$c][$a] = $d;
+		// 		$imagename = $_FILES['product_gallery2']['name'];
 		// 	}
 		// }
 
-		// $filesnum = count($files)-2;
-		// foreach ($files as $file) {
-
-		// 	$filenamex = "gallery_product_".date("d-m-Y_Hms");
+		// $filesnum = count($file)-2;
+		// echo $filesnum;
+		// // print_r($file);
+		// // die();
+		// $x=0;
+		// foreach ($file as $file) {
+		// 	$x++;
+		// 	$filenamex = "gallery_".date("d-m-Y_Hms");
 
 
 		// 	$handle = new upload($file);
@@ -577,9 +583,9 @@ class Model_product extends CI_Model {
 		// 	if ($handle->uploaded) {
 		// 		$handle->file_new_name_body   = $filenamex;
 		// 		$handle->image_resize         = true;
-		// 		//$handle->image_ratio_crop     = "T";
-		// 		$handle->image_x              = '555';
-		// 		$handle->image_y       		  = '473';
+		// 		$handle->image_ratio_crop     = "T";
+		// 		$handle->image_x              = '60';
+		// 		$handle->image_y       		  = '60';
 		// 		//$handle->image_ratio_y        = true;
 		// 		//$handle->jpeg_quality = '100';
 
@@ -589,8 +595,8 @@ class Model_product extends CI_Model {
 		// 		if ($handle->processed) {
 
 		// 			$data = array(
-		// 				'gallery_Images' => $image_name_thumb,
-		// 				'gallery_Sort' => $_POST["sort"][$filesnum],
+		// 				'gallery_Images2' => $image_name_thumb,
+		// 				'gallery_Sort' => $x,
 		// 				'product_ID' => $id,
 		// 			);
 		// 			$this->db->insert('tb_product_gallery', $data);						
@@ -601,12 +607,13 @@ class Model_product extends CI_Model {
 		// 	$filesnum--;
 		// }
 		
+
+
 		
 		
 		/*
-		
 		$files2 = array();
-		foreach ($_FILES['product_file_TH'] as $k2 => $l2)
+		foreach (@$_FILES['product_file_TH'] as $k2 => $l2)
 		{
 			foreach ($l2 as $i2 => $v2)
 			{
@@ -643,7 +650,7 @@ class Model_product extends CI_Model {
 					
 					$data = array(
 						'file_Title_TH' => $_POST["file_Title_TH"][$key],
-						'file_Name' => $image_name_thumb,
+						'file_name_TH' => $image_name_thumb,
 						'file_Type' => $ext[1],
 						'file_Size' => $file2["size"],
 						'product_ID' => $id,
@@ -656,7 +663,7 @@ class Model_product extends CI_Model {
 			}
 			
 			$key--;
-		}*/
+		}
 		
 		/*
 		$files3 = array();
@@ -667,26 +674,26 @@ class Model_product extends CI_Model {
 				if (!array_key_exists($i3, $files3))
 					$files3[$i3] = array();
 				$files3[$i3][$k3] = $v3;
-				
+
 			}
-			
+
 		}
 		
 		$key3 =count($files3)-2;
 		
 		foreach ($files3 as $file3) {
-			
+
 
 			$imagename = $file3["name"];
 			$ext = explode('.',$imagename);
 
 			$filenamex = "file_EN_".date("d-m-Y_Hms");
 
-			
+
 			$handle = new upload($file3);
-			
-			
-			
+
+
+
 			if ($handle->uploaded) {
 				$handle->file_new_name_body   = $filenamex;	
 				$handle->process('assets/upload/file');
@@ -694,26 +701,26 @@ class Model_product extends CI_Model {
 
 
 				if ($handle->processed) {
-					
+
 					$data = array(
 						'file_Title_EN' => $_POST["file_Title_EN"][$key3],
-						'file_Name' => $image_name_thumb,
+						'file_name_EN' => $image_name_thumb,
 						'file_Type' => $ext[1],
 						'file_Size' => $file3["size"],
 						'product_ID' => $id,
 					);
 					$this->db->insert('tb_file', $data);			
-					
-					
+
+
 				}
 
 			}
-			
-			$key3--;
-		}*/
 
+			$key3--;
+		}
+*/
 		//exit();
-		//echo $this->db->last_query();
+		echo $this->db->last_query();
 		if($this->db->trans_status() === TRUE)
 		{
 
@@ -730,21 +737,31 @@ class Model_product extends CI_Model {
 	
 	public function update() 
 	{ 
-		
+		/*echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+		die();*/
 		$id = $this->db->escape_str($this->input->post('id'));
 		$data = array(
 			'product_Name_TH' => $_POST["product_Name_TH"],
-			//'product_Name_EN' => $_POST["product_Name_EN"],
-			'product_Clip' => $_POST["product_Clip"],
-			'product_Detail_TH' => $_POST["product_Detail_TH"],
-			//'product_Detail_EN' => $_POST["product_Detail_EN"],
+			'product_Name_EN' => $_POST["product_Name_EN"],
+			// 'product_Detail_TH' => $_POST["product_Detail_TH"],
+			// 'product_Detail_EN' => $_POST["product_Detail_EN"],
+			// 'product_Price' => $_POST["product_Price"],
+			// 'product_Sale' => $_POST["product_Sale"],
 			'product_Des_TH' => $_POST["product_Des_TH"],
-			//'product_Des_EN' => $_POST["product_Des_EN"],
-			//'product_Des2_TH' => $_POST["product_Des2_TH"],
-			//'product_Des2_EN' => $_POST["product_Des2_EN"],
-			//'product_Des3_TH' => $_POST["product_Des3_TH"],
-			//'product_Des3_EN' => $_POST["product_Des3_EN"],
-			//'category_ID' => $_POST["category_ID"],
+			'product_Des_EN' => $_POST["product_Des_EN"],
+			'product_Des2_TH' => $_POST["product_Des2_TH"],
+			'product_Des2_EN' => $_POST["product_Des2_EN"],
+			'product_Des3_TH' => $_POST["product_Des3_TH"],
+			'product_Des3_EN' => $_POST["product_Des3_EN"],
+			// 'product_Special_TH' => $_POST["product_Special_TH"],
+			// 'product_Special_EN' => $_POST["product_Special_EN"],
+			// 'product_Title' => $_POST["product_Title"],
+			// 'product_Clip' => $_POST["product_Clip"],
+			// 'brand_ID' => $_POST["brand_ID"],////ยี้ห้อ
+			// 'category_ID' => $_POST["category_ID"],//ประเภทใช้งาน
+			// 'category2_ID' => $_POST["category2_ID"],//การใช้งาน
 
 		);
 
@@ -753,21 +770,21 @@ class Model_product extends CI_Model {
 		$this->db->update('tb_product', $data);
 		
 
-		if (!empty($_FILES["product_Images"]["name"])) {
+		if (!empty(@$_FILES["product_Images"]["name"])) {
 
 
 			$rename = "PHOTO_product_" . date("d-m-Y_Hms");
 
 
-			$handle = new upload($_FILES["product_Images"]);
+			$handle = new upload(@$_FILES["product_Images"]);
 
 
 			if ($handle->uploaded) {
 				$handle->file_new_name_body = $rename;
 				$handle->image_resize = true;
 					//$handle->image_ratio_crop = "T";
-				$handle->image_x = '555';
-				$handle->image_y = '320';
+				$handle->image_x = '360';
+				$handle->image_y = '240';
 				$handle->image_ratio_y        = true;
 					//$handle->jpeg_quality = '100';
 					//$handle->image_watermark = '../../class.upload/bg.png';
@@ -788,175 +805,181 @@ class Model_product extends CI_Model {
 			}
 			
 		}
-		if (@$_FILES["product_Images2"]["name"] != "") {
+
+		
+		if(is_array(@$_POST["gallery_ID"])){
+			foreach (@$_POST["gallery_ID"] as $keyConf => $valConf) {
+				$data = array(
+					'gallery_Sort' => $_POST["sort-".$valConf],
+				);
+
+				$this->db->where('gallery_ID', $valConf);
+				$this->db->update('tb_product_gallery', $data);
+			}
+		}		
+		
+		$files = array();
+		foreach (@$_FILES['product_gallery'] as $k => $l)
+		{
+			foreach ($l as $i => $v)
+			{
+				if (!array_key_exists($i, $files))
+					$files[$i] = array();
+				$files[$i][$k] = $v;
+				$imagename = @$_FILES['product_gallery']['name'];
+			}
+		}
+
+		$filesnum = count($files)-2;
+		foreach ($files as $file) {
+
+			$filenamex = "gallery_product_".date("d-m-Y_Hms");
 
 
-			$rename2 = "PHOTO_product2_" . date("d-m-Y_Hms");
+			$handle = new upload($file);
 
 
-			$handle = new upload(@$_FILES["product_Images2"]);
 
+			if ($handle->uploaded) {					
+				$handle->file_new_name_body = $filenamex;
+				$handle->file_name_body_pre = 'full_';
+				$handle->process('assets/upload/gallery');
+			}
 
 			if ($handle->uploaded) {
-				$handle->file_new_name_body   = $rename2;
+				$handle->file_new_name_body   = $filenamex;
 				$handle->image_resize         = true;
 				//$handle->image_ratio_crop     = "T";
-				$handle->image_x              = '555';
-				$handle->image_y       		  = '320';
+				$handle->image_x = '1259';
+				$handle->image_y = '840';
 				//$handle->image_ratio_y        = true;
 				//$handle->jpeg_quality = '100';
 
-				$handle->process('assets/upload/product');
+				$handle->process('assets/upload/gallery');
+				$image_name_thumb =  $handle->file_dst_name;
+
+				if ($handle->processed) {
+
+					$data = array(
+						'gallery_Images' => $image_name_thumb,
+						'gallery_Sort' => $_POST["sort"][$filesnum],
+						'Type' => 'product',
+						'ID' => $id,
+					);
+					$this->db->insert('tb_gallery', $data);						
+
+				}
+
 			}
-
-			if ($handle->processed) {
-				$photo_name2 = $handle->file_dst_name;
+			$filesnum--;
+		}
+	
+		$files2 = array();
+		foreach ($_FILES['product_file_TH'] as $k2 => $l2)
+		{
+			foreach ($l2 as $i2 => $v2)
+			{
+				if (!array_key_exists($i2, $files2))
+					$files2[$i2] = array();
+				$files2[$i2][$k2] = $v2;
+				
 			}
-
-			$data = array(
-				'product_Images2' => $photo_name2,
-			);
-			$this->db->where('product_ID', $id);
-			$this->db->update('tb_product', $data);
-
-			@unlink("assets/upload/product/$_POST[product_Images2]");
 			
 		}
-
-		// if (@$_FILES["product_Images_M"]["name"] != "") {
-
-
-		// 	$rename3 = "PHOTO_M_" . date("d-m-Y_Hms");
-
-
-		// 	$handle = new upload(@$_FILES["product_Images_M"]);
-
-
-		// 	if ($handle->uploaded) {
-		// 		$handle->file_new_name_body   = $rename3;
-		// 		$handle->image_resize         = true;
-		// 		//$handle->image_ratio_crop     = "T";
-		// 		$handle->image_x              = '474';
-		// 		$handle->image_y       		  = '250';
-		// 		//$handle->image_ratio_y        = true;
-		// 		//$handle->jpeg_quality = '100';
-
-		// 		$handle->process('assets/upload/product');
-		// 	}
-
-		// 	if ($handle->processed) {
-		// 		$photo_name3 = $handle->file_dst_name;
-		// 	}
-
-		// 	$data = array(
-		// 		'product_Images_M' => $photo_name3,
-		// 	);
-		// 	$this->db->where('product_ID', $id);
-		// 	$this->db->update('tb_product', $data);
-		// 	@unlink("assets/upload/product/$_POST[product_Images_M]");
+		/*
+		$key =count($files2)-2;
+		
+		foreach ($files2 as $file2) {
 			
-		// }
 
-		// if (@$_FILES["product_Images_M2"]["name"] != "") {
+			$imagename = $file2["name"];
+			$ext = explode('.',$imagename);
 
+			$filenamex = "file_TH_".date("d-m-Y_Hms");
 
-		// 	$rename4 = "PHOTO_M_2_" . date("d-m-Y_Hms");
-
-
-		// 	$handle = new upload(@$_FILES["product_Images_M2"]);
-
-
-		// 	if ($handle->uploaded) {
-		// 		$handle->file_new_name_body   = $rename4;
-		// 		$handle->image_resize         = true;
-		// 		//$handle->image_ratio_crop     = "T";
-		// 		$handle->image_x              = '474';
-		// 		$handle->image_y       		  = '250';
-		// 		//$handle->image_ratio_y        = true;
-		// 		//$handle->jpeg_quality = '100';
-
-		// 		$handle->process('assets/upload/product');
-		// 	}
-
-		// 	if ($handle->processed) {
-		// 		$photo_name4 = $handle->file_dst_name;
-		// 	}
-
-		// 	$data = array(
-		// 		'product_Images_M2' => $photo_name4,
-		// 	);
-		// 	$this->db->where('product_ID', $id);
-		// 	$this->db->update('tb_product', $data);
-		// 	@unlink("assets/upload/product/$_POST[product_Images_M2]");
 			
-		// }
+			$handle = new upload($file2);
+			
+			
+			
+			if ($handle->uploaded) {
+				$handle->file_new_name_body   = $filenamex;	
+				$handle->process('assets/upload/file');
+				$image_name_thumb =  $handle->file_dst_name ; 
+
+
+				if ($handle->processed) {
+					
+					$data = array(
+						'file_Title_TH' => $_POST["file_Title_TH"][$key],
+						'file_name_TH' => $image_name_thumb,
+						'file_Type' => $ext[1],
+						'file_Size' => $file2["size"],
+						'product_ID' => $id,
+					);
+					$this->db->insert('tb_file', $data);			
+					
+					
+				}
+
+			}
+			
+			$key--;
+		}/*
+		/////////////////////////////////////////////////////////
+		$files3 = array();
+		foreach ($_FILES['product_file_EN'] as $k3 => $l3)
+		{
+			foreach ($l3 as $i3 => $v3)
+			{
+				if (!array_key_exists($i2, $files3))
+					$files3[$i3] = array();
+				$files3[$i3][$k3] = $v3;
+
+			}
+
+		}
 		
+		$key =count($files3)-2;
 		
-		// if(is_array($_POST["gallery_ID"])){
-		// 	foreach ($_POST["gallery_ID"] as $keyConf => $valConf) {
-		// 		$data = array(
-		// 			'gallery_Sort' => $_POST["sort-".$valConf],
-		// 		);
-
-		// 		$this->db->where('gallery_ID', $valConf);
-		// 		$this->db->update('tb_product_gallery', $data);
-		// 	}
-		// }		
-		
-		// $files = array();
-		// foreach ($_FILES['product_gallery'] as $k => $l)
-		// {
-		// 	foreach ($l as $i => $v)
-		// 	{
-		// 		if (!array_key_exists($i, $files))
-		// 			$files[$i] = array();
-		// 		$files[$i][$k] = $v;
-		// 		$imagename = $_FILES['product_gallery']['name'];
-		// 	}
-		// }
-
-		// $filesnum = count($files)-2;
-		// foreach ($files as $file) {
-
-		// 	$filenamex = "gallery_product_".date("d-m-Y_Hms");
+		foreach ($files3 as $file3) {
 
 
-		// 	$handle = new upload($file);
+			$imagename = $file3["name"];
+			$ext = explode('.',$imagename);
+
+			$filenamex = "file_EN_".date("d-m-Y_Hms");
+
+
+			$handle = new upload($file3);
 
 
 
-		// 	if ($handle->uploaded) {					
-		// 		$handle->file_new_name_body = $filenamex;
-		// 		$handle->file_name_body_pre = 'full_';
-		// 		$handle->process('assets/upload/product/gallery');
-		// 	}
+			if ($handle->uploaded) {
+				$handle->file_new_name_body   = $filenamex;	
+				$handle->process('assets/upload/file');
+				$image_name_thumb =  $handle->file_dst_name ; 
 
-		// 	if ($handle->uploaded) {
-		// 		$handle->file_new_name_body   = $filenamex;
-		// 		$handle->image_resize         = true;
-		// 		//$handle->image_ratio_crop     = "T";
-		// 		$handle->image_x = '384';
-		// 		$handle->image_y = '513';
-		// 		//$handle->image_ratio_y        = true;
-		// 		//$handle->jpeg_quality = '100';
 
-		// 		$handle->process('assets/upload/product/gallery');
-		// 		$image_name_thumb =  $handle->file_dst_name;
+				if ($handle->processed) {
 
-		// 		if ($handle->processed) {
+					$data = array(
+						'file_Title_EN' => $_POST["file_Title_EN"][$key],
+						'file_name_EN' => $image_name_thumb,
+						'file_Type' => $ext[1],
+						'file_Size' => $file2["size"],
+						'product_ID' => $id,
+					);
+					$this->db->insert('tb_file', $data);			
 
-		// 			$data = array(
-		// 				'gallery_Images' => $image_name_thumb,
-		// 				'gallery_Sort' => $_POST["sort"][$filesnum],
-		// 				'product_ID' => $id,
-		// 			);
-		// 			$this->db->insert('tb_product_gallery', $data);						
 
-		// 		}
+				}
 
-		// 	}
-		// 	$filesnum--;
-		// }
+			}
+
+			$key--;
+		}*/
+		///////////////////////////////////////////////////////////
 		
 		//echo $this->db->last_query();
 		if($this->db->trans_status() === TRUE)
@@ -985,7 +1008,7 @@ class Model_product extends CI_Model {
 		if($this->input->post('id')!=""){
 
 			$id = $this->db->escape_str($this->input->post('id'));
-			$query = $this->db->get_where('tb_product_gallery', array('gallery_ID' => $id));
+			$query = $this->db->get_where('tb_gallery', array('gallery_ID' => $id));
 			$row = $query->row_array();
 			$photos_Name = $row["gallery_Images"];
 
@@ -994,8 +1017,8 @@ class Model_product extends CI_Model {
 
 
 			$this->db->where('gallery_ID', $id);
-			$this->db->delete('tb_product_gallery');
-			$this->dbutil->optimize_table('tb_product_gallery');
+			$this->db->delete('tb_gallery');
+			$this->dbutil->optimize_table('tb_gallery');
 
 		}
 		
@@ -1006,14 +1029,17 @@ class Model_product extends CI_Model {
 	public function delete_file() 
 	{ 
 		
-		
 		if($this->input->post('id')!=""){
 
 			$id = $this->db->escape_str($this->input->post('id'));
 
-			$query = $this->db->get_where('tb_file', array('file_ID' => $id));
+			$query = $this->db->get_where('tb_file', array('File_name_EN' => $id));
 			$row = $query->row_array();
-			$Name = $row["file_Name"];
+			if ($row["File_name_TH"] != "") {
+				$Name = $row["File_name_TH"];
+			}else{
+				$Name = $row["File_name_EN"];
+			}
 
 			unlink("assets/upload/file/$Name");
 
@@ -1035,7 +1061,7 @@ class Model_product extends CI_Model {
 
 			$id = $this->db->escape_str($this->input->post('id'));
 			
-			/*$query = $this->db->get_where('tb_product_gallery', array('product_ID' => $id));
+			$query = $this->db->get_where('tb_product_gallery', array('product_ID' => $id));
 
 			foreach ($query->result_array() as $row)
 			{
@@ -1049,15 +1075,16 @@ class Model_product extends CI_Model {
 			foreach ($query->result_array() as $row)
 			{
 
-				unlink("assets/upload/file/$row[file_Name]");
+				unlink("assets/upload/file/$row[File_name_TH]");
+				unlink("assets/upload/file/$row[File_name_EN]");
 
 
-			}*/
-			/*
-			$query = $this->db->get_where('tb_product', array('product_ID' => $id));
-			$row = $query->row_array();
-			unlink("assets/upload/$row[product_Images2]");
-			*/
+			}
+			
+			// $query = $this->db->get_where('tb_product', array('product_ID' => $id));
+			// $row = $query->row_array();
+			// unlink("assets/upload/$row[product_Images2]");
+			
 			$query = $this->db->get_where('tb_product', array('product_ID' => $id));
 			$row = $query->row_array();
 			unlink("assets/upload/$row[product_Images]");
@@ -1101,23 +1128,24 @@ class Model_product extends CI_Model {
 
 				$id = $this->db->escape_str($this->input->post('id')[$i]);
 				
-				/*$query = $this->db->get_where('tb_product_gallery', array('product_ID' => $id));
+				$query = $this->db->get_where('tb_product_gallery', array('product_ID' => $id));
 				foreach ($query->result_array() as $row)
 				{
 
 					@unlink("assets/upload/gallery/full_$row[gallery_Images]");
 					@unlink("assets/upload/gallery/$row[gallery_Images]");
 
-				}*/
-				/*
+				}
+				
 				$query = $this->db->get_where('tb_file', array('product_ID' => $id));
 				foreach ($query->result_array() as $row)
 				{
 
-					unlink("assets/upload/file/$row[file_Name]");
+					unlink("assets/upload/file/$row[File_name_TH]");
+					unlink("assets/upload/file/$row[File_name_EN]");
 
 
-				}*/
+				}
 
 				$query = $this->db->get_where('tb_product', array('product_ID' =>$id));
 				$row = $query->row_array();
@@ -1132,11 +1160,11 @@ class Model_product extends CI_Model {
 				$this->db->where('product_ID', $id);
 				$this->db->delete('tb_product');
 				
-				//$this->db->where('product_ID', $id);
-				//$this->db->delete('tb_file');
+				$this->db->where('product_ID', $id);
+				$this->db->delete('tb_file');
 				
-				//$this->db->where('product_ID', $id);
-				//$this->db->delete('tb_product_gallery');
+				$this->db->where('product_ID', $id);
+				$this->db->delete('tb_product_gallery');
 				
 
 
@@ -1188,13 +1216,20 @@ class Model_product extends CI_Model {
 		if($this->input->post('id')!=""){
 
 			$id = $this->db->escape_str($this->input->post('id'));
+			$query = $this->db->where('product_Home', 1)->get('tb_product');
+			$Num_Rows = $query->num_rows();
 			
-			$query = $this->db->get_where('tb_product', array('product_ID' => $id));
-			$row = $query->row_array();
-			if($row["product_Home"] == 1){
-				$Home = 0;
-			}else{
-				$Home = 1;
+			if($Num_Rows < 12){
+
+				$query = $this->db->get_where('tb_product', array('product_ID' => $id));
+				$row = $query->row_array();
+
+
+				if($row["product_Home"] == 1){
+					$Home = 0;
+				}else{
+					$Home = 1;
+				}
 			}
 
 			$data = array(
@@ -1203,11 +1238,11 @@ class Model_product extends CI_Model {
 			$this->db->where('product_ID', $id);
 			$this->db->update('tb_product', $data);
 
+			
+			;}
 
-		}
-		
-		
-		
+
+
 	}//function
 	
 	
@@ -1222,11 +1257,12 @@ class Model_product extends CI_Model {
 		$old_sort = $row["product_Sort"];
 		$new_sort = $_POST["value"];
 		$category_ID = $row["category_ID"];
+		$brand_ID = $row["brand_ID"];
 
 		if($new_sort > $old_sort){ 
 
 			$this->db->set('product_Sort', 'product_Sort-1', FALSE);
-			$this->db->where("product_Sort Between '$old_sort' and '$new_sort' AND category_ID = '$category_ID' AND product_ID != '$id' ");
+			$this->db->where("product_Sort Between '$old_sort' and '$new_sort'  AND category_ID = '$category_ID' AND product_ID != '$id' ");
 			$this->db->update('tb_product');
 			
 

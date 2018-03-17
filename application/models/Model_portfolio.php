@@ -93,7 +93,7 @@ class Model_portfolio extends CI_Model {
 		}else{
 			
 			
-			$rows_per_page = 4;
+			$rows_per_page = 9;
 			$current_page = 1;
 			$page_range = 5;
 			$qry_string = "";
@@ -170,11 +170,11 @@ class Model_portfolio extends CI_Model {
 			$data["news"] = array(
 					'news_ID' => $row["news_ID"],
 					'news_Name_TH' => $row["news_Name_TH"],
-					// 'news_Name_EN' => $row["news_Name_EN"],
+					'news_Name_EN' => $row["news_Name_EN"],
 					'news_Detail_TH' => $row["news_Detail_TH"],
-					// 'news_Detail_EN' => $row["news_Detail_EN"],
+					'news_Detail_EN' => $row["news_Detail_EN"],
 					'news_Des_TH' => $row["news_Des_TH"],
-					// 'news_Des_EN' => $row["news_Des_EN"],
+					'news_Des_EN' => $row["news_Des_EN"],
 					'news_Images' => $row["news_Images"],
 			);
 			
@@ -220,11 +220,11 @@ class Model_portfolio extends CI_Model {
 
 			$data = array(
 				'news_Name_TH' => $_POST["news_Name_TH"],
-				// 'news_Name_EN' => $_POST["news_Name_EN"],				
+				'news_Name_EN' => $_POST["news_Name_EN"],				
 				'news_Detail_TH' => $_POST["news_Detail_TH"],
-				// 'news_Detail_EN' => $_POST["news_Detail_EN"],
+				'news_Detail_EN' => $_POST["news_Detail_EN"],
 				'news_Des_TH' => str_replace("\n", "<br>\n", $_POST["news_Des_TH"]),
-				// 'news_Des_EN' => str_replace("\n", "<br>\n", $_POST["news_Des_EN"]),
+				'news_Des_EN' => str_replace("\n", "<br>\n", $_POST["news_Des_EN"]),
 				'news_Sort' => $Sort,
 				'news_Type' => $this->type,
 				
@@ -238,7 +238,7 @@ class Model_portfolio extends CI_Model {
 		if ($_FILES["news_Images"]["name"] != "") {
 
         
-				$rename = "PHOTO_projects_" . date("d-m-Y_Hms");
+				$rename = "PHOTO_news_" . date("d-m-Y_Hms");
 
 
 				$handle = new upload($_FILES["news_Images"]);
@@ -248,13 +248,13 @@ class Model_portfolio extends CI_Model {
 					$handle->file_new_name_body = $rename;
 					$handle->image_resize = true;
 					//$handle->image_ratio_crop = "T";
-					$handle->image_x = '560';
-					$handle->image_y = '375';
+					$handle->image_x = '360';
+					$handle->image_y = '320';
 					//$handle->image_ratio_y        = true;
 					//$handle->jpeg_quality = '100';
 					//$handle->image_watermark = '../../class.upload/bg.png';
 
-					$handle->process('assets/upload/projects');
+					$handle->process('assets/upload');
 				}
 
 				if ($handle->processed) {
@@ -270,7 +270,7 @@ class Model_portfolio extends CI_Model {
 			
 		}
 		
-		$files = array();
+		/*$files = array();
 		foreach ($_FILES['news_gallery'] as $k => $l)
 		{
 			foreach ($l as $i => $v)
@@ -302,8 +302,8 @@ class Model_portfolio extends CI_Model {
 				$handle->file_new_name_body   = $filenamex;
 				$handle->image_resize         = true;
 				//$handle->image_ratio_crop     = "T";
-				$handle->image_x              = '370';
-				$handle->image_y       		  = '210';
+				$handle->image_x              = '300';
+				$handle->image_y       		  = '230';
 				//$handle->image_ratio_y        = true;
 				//$handle->jpeg_quality = '100';
 
@@ -323,7 +323,7 @@ class Model_portfolio extends CI_Model {
 
 			}
 			$filesnum--;
-		}
+		}*/
 		
 		
 		//exit();
@@ -348,11 +348,11 @@ class Model_portfolio extends CI_Model {
 		$id = $this->db->escape_str($this->input->post('id'));
 		$data = array(
 			'news_Name_TH' => $_POST["news_Name_TH"],
-			// 'news_Name_EN' => $_POST["news_Name_EN"],				
+			'news_Name_EN' => $_POST["news_Name_EN"],				
 			'news_Detail_TH' => $_POST["news_Detail_TH"],
-			// 'news_Detail_EN' => $_POST["news_Detail_EN"],
+			'news_Detail_EN' => $_POST["news_Detail_EN"],
 			'news_Des_TH' => str_replace("\n", "<br>\n", $_POST["news_Des_TH"]),
-			// 'news_Des_EN' => str_replace("\n", "<br>\n", $_POST["news_Des_EN"]),
+			'news_Des_EN' => str_replace("\n", "<br>\n", $_POST["news_Des_EN"]),
 
 		);
 
@@ -365,7 +365,7 @@ class Model_portfolio extends CI_Model {
 		if ($_FILES["news_Images"]["name"] != "") {
 
         
-				$rename = "PHOTO_projects_" . date("d-m-Y_Hms");
+				$rename = "PHOTO_news_" . date("d-m-Y_Hms");
 
 
 				$handle = new upload($_FILES["news_Images"]);
@@ -375,13 +375,13 @@ class Model_portfolio extends CI_Model {
 					$handle->file_new_name_body = $rename;
 					$handle->image_resize = true;
 					//$handle->image_ratio_crop = "T";
-					$handle->image_x = '560';
-					$handle->image_y = '375';
+					$handle->image_x = '360';
+					$handle->image_y = '320';
 					//$handle->image_ratio_y        = true;
 					//$handle->jpeg_quality = '100';
 					//$handle->image_watermark = '../../class.upload/bg.png';
 
-					$handle->process('assets/upload/projects');
+					$handle->process('assets/upload');
 				}
 
 				if ($handle->processed) {
@@ -399,7 +399,7 @@ class Model_portfolio extends CI_Model {
 		}
 		
 		
-		if(is_array($_POST["gallery_ID"])){
+		/*if(is_array($_POST["gallery_ID"])){
 			foreach ($_POST["gallery_ID"] as $keyConf => $valConf) {
 				$data = array(
 					'gallery_Sort' => $_POST["sort-".$valConf],
@@ -442,8 +442,8 @@ class Model_portfolio extends CI_Model {
 				$handle->file_new_name_body   = $filenamex;
 				$handle->image_resize         = true;
 				//$handle->image_ratio_crop     = "T";
-				$handle->image_x              = '370';
-				$handle->image_y       		  = '210';
+				$handle->image_x              = '300';
+				$handle->image_y       		  = '230';
 				//$handle->image_ratio_y        = true;
 				$handle->jpeg_quality = '100';
 
@@ -463,7 +463,7 @@ class Model_portfolio extends CI_Model {
 
 			}
 			$filesnum--;
-		}
+		}*/
 		
 		
 		

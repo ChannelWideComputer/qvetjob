@@ -15,7 +15,7 @@ select{
                     <div class="panel panel-default">
                         <div class="panel-heading">
                        
-                           <strong>Member</strong>
+                           <strong>สมาชิก</strong>
                          
                         
                         </div>

@@ -47,7 +47,7 @@ select{
       <td width="1%" align="center"><input type="checkbox" name="CheckAll" id="selectAll" ></td>
       <td width="27%" align="center">ชื่อ</td>
       <td width="20%" align="center">วันที่</td>
-      <!-- <td width="8%" align="center">หน้าแรก</td> -->
+      <td width="8%" align="center">หน้าแรก</td>
       <td width="8%" align="center">เรียงลำดับ</td>
       <td width="8%" align="center">สถานะ</td>
       <td width="8%" align="center">แก้ไข</td>
@@ -73,7 +73,7 @@ $i++;
  <td align="center"><input class="ChkBox" type="checkbox" name="checkboxlist"  value="<?php echo $row["news_ID"];?>"></td> 
  <td align="center"><?php echo $row["news_Name_TH"]?></td>
  <td align="center"><?php echo DateThai_timestame($row["news_Date"]);?></td>
- <!-- <td align="center">
+ <td align="center">
  <a id="<?php echo $row['news_ID'];?>" class="Home" href="javascript:void(0)">
 	<?php
     if($row["news_Home"] == 1){
@@ -83,7 +83,7 @@ $i++;
     }
     ?>
     </a>
- </td> -->
+ </td>
  <td align="center">
  <select class="form-control Sort" id="<?php echo $row['news_ID'];?>">
      <?php

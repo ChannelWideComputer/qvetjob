@@ -170,7 +170,8 @@ class Model_register extends CI_Model {
 			$captcha=$_POST['g-recaptcha-response'];
 		}
 
-		$secret = '6LelrjMUAAAAAKkNLbYrzV4okYSVQ8JdqJ0gKCai';
+		// $secret = '6LdKizQUAAAAANK_U7SYlLkG3HzNZu0fogvWpWAc';local
+		$secret = '6LelrjMUAAAAAKkNLbYrzV4okYSVQ8JdqJ0gKCai';//ftp
 		$url = 'https://www.google.com/recaptcha/api/siteverify';
 		$response = file_get_contents($url."?secret=".$secret."&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
 
