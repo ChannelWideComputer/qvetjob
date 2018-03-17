@@ -10,10 +10,9 @@ class Home extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Model_about');
 		$this->load->model('Model_slide');
-		$this->load->model('Model_contact');
 		$this->load->model('Model_product');
-        $this->load->model('Model_service');
-        $this->load->model('Model_promotion');
+        // $this->load->model('Model_service');
+        // $this->load->model('Model_promotion');
         $this->load->model('Model_category');
         $this->load->helpers('counter_helper');
 	}
@@ -34,14 +33,14 @@ class Home extends CI_Controller {
         
         $rows_per_page = 15;
         $page_url = base_url($this->default_page);
-        $data = $this->Model_service->get_all($rows_per_page,$page_url);
+        // $data = $this->Model_service->get_all($rows_per_page,$page_url);
 		
 		$data["slide"] = $this->Model_slide->get_home();
 		$data['page_url'] = $page_url;
 		//$data["cate"] = $this->Model_category->get_home();
-		$data["service"] = $this->Model_service->get_home("home");
+		// $data["service"] = $this->Model_service->get_home("home");
 		$data["menu"] = $this->Model_product->get_home("home");
-        $data["promotion"] = $this->Model_promotion->get_home("home");
+        // $data["promotion"] = $this->Model_promotion->get_home("home");
         //$data = $this->Model_product->get_all($rows_per_page,$page_url);
 		//$data["portfolio"] = $this->Model_portfolio->get_home("home");
 		
@@ -50,7 +49,6 @@ class Home extends CI_Controller {
 		echo "</pre>";
 		//die();*/
 		$data["home"] = $this->Model_about->get_about("home");
-		$data["contact"] = $this->Model_contact->get_home("home");	
 		
 		
 		
