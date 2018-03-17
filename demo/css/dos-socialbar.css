@@ -1,0 +1,141 @@
+.social-sidebar-buttons {
+width: 32px;
+margin-left: 1100px;
+}
+.social-facebook {
+    height: 48px;
+    width: 48px;
+    margin:0px 0 0 48px;
+    float: left;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+ position:fixed;
+ right:0px;
+ z-index:1000;
+ top:200px;
+
+}
+.social-facebook:hover {
+    background-position: 0px -48px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.8);
+}
+.social-line {
+    height: 48px;
+    width: 48px;
+    margin:0px 0 0 48px;
+    float: left;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+ position:fixed;
+ right:0px;
+ z-index:1000;
+ top:250px;
+ 
+}
+.social-line:hover {
+    background-position: 0px -48px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.8);
+}
+.social-google {
+    height: 48px;
+    width: 48px;
+    margin:0px 0 0 48px;
+    float: left;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+ position:fixed;
+ right:0px;
+ z-index:1000;
+ top:300px;
+ 
+}
+.social-google:hover {
+    background-position: 0px -48px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.8);
+}
+.social-youtube {
+    height: 48px;
+    width: 48px;
+    margin:0px 0 0 48px;
+    float: left;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+ position:fixed;
+ right:0px;
+ z-index:1000;
+ top:350px;
+ 
+}
+.social-youtube:hover {
+    background-position: 0px -48px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.8);
+}
+.social-rss {
+    height: 48px;
+    width: 48px;
+    margin:0px 0 0 48px;
+    float: left;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+ position:fixed;
+ right:0px;
+ z-index:1000;
+ top:400px;
+ 
+}
+.social-x {
+    height: 48px;
+    width: 48px;
+    color: #fff;
+    font-size: 30px;
+    padding: 10px;
+    text-align: center;
+    background-color: #da70ee;
+    margin:0px 0 0 48px;
+    float: left;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+ position:fixed;
+ right:0px;
+ z-index:1000;
+ top:350px;
+ 
+}
+.social-rss:hover {
+    background-position: 0px -48px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.8);
+}
+.line-hover {
+    background-image: url('../images/line-hover.png');
+}
+.facebook-hover {
+    background-image: url('../images/facebook-hover.png');
+ 
+}
+.google-hover {
+    background-image: url('../images/google-hover.png');
+}
+.youtube-hover {
+    background-image: url('../images/youtube-hover.png');
+}
+.rss-hover {
+    background-image: url('../images/rss-hover.png');
+}

@@ -1,0 +1,32 @@
+.d-padding{
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+.bg-nav{
+    padding-top: 28px;
+    padding-bottom: 28px;
+    background: url(../images/stock01.jpg) no-repeat top center;
+    background-repeat: repeat-y;
+    width: 100%;
+    text-align: center;
+}
+.bg-slider{
+	padding-top: 10px;
+	background: #d7d7d2;
+	padding-bottom: 30px;
+}
+@media(max-width:1024px){
+
+}
+@media(max-width:768px){
+.bg-nav{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+}
+@media(max-width:414px){
+.bg-nav{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+}

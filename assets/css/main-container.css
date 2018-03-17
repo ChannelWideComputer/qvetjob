@@ -1,0 +1,35 @@
+.main-container {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0px 15px;
+}
+.main-container {
+    max-width: 1200px;
+}
+.profile-box{
+    height: 435px!important;
+}
+
+}
+@media(max-width:1200px){
+    .main-container {
+        position: relative;
+        max-width: 1170px;
+        margin: 0 auto;
+        padding: 0px 15px;
+        display: block;
+        clear: both;
+    }
+    .profile-box{
+        height: 360px!important;
+    }
+}
+@media(max-width:1024px){
+
+}
+@media(max-width:768px){
+
+}
+@media(max-width:414px){
+
+}

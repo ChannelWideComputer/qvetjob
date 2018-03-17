@@ -1,0 +1,75 @@
+.d-box-gay {
+    display: block;
+    padding: 15px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #dfdfdf;
+    border: 1px solid #dfdfdf;
+    border-radius: 0px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+
+.d-box-gay01 {
+    display: block;
+    padding: 15px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #d6d6d6;
+    border: 1px solid #d6d6d6;
+    border-radius: 0px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+.d-box-purple {
+    display: block;
+    padding: 15px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #61348f;
+    border: 1px solid #61348f;
+    border-radius: 0px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+
+.d-box-yellow {
+    display: block;
+    padding: 28px 15px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #fed700;
+    border: 1px solid #fed700;
+    border-radius: 0px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+
+.d-box-white {
+    display: block;
+    padding: 15px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #ffffff;
+    border: 1px solid #a1a1a1;
+    border-radius: 0px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+.d-box-orange {
+    display: block;
+    padding: 15px;
+    color: #fff;
+    line-height: 1.42857143;
+    background-color: #ed4a29;
+    border: 1px solid #ed4a29;
+    border-radius: 0px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}

@@ -1,0 +1,51 @@
+/*!
+ * Start Bootstrap - Thumbnail Gallery HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body {
+    padding-top: 0px; /* Required padding for .navbar-fixed-top. Change if height of navigation changes. */
+}
+
+.thumb {
+    margin-bottom: 30px;
+}
+
+footer {
+    margin: 50px 0;
+
+}
+
+
+
+.thumbnail01 {
+  display: block;
+  padding: 0px;
+  margin-bottom: 0px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  -webkit-transition: border .2s ease-in-out;
+       -o-transition: border .2s ease-in-out;
+          transition: border .2s ease-in-out;
+}
+.thumbnail01 > img,
+.thumbnail01 a > img {
+  margin-right: auto;
+  margin-left: auto;
+}
+.thumbnail01:hover,
+.thumbnail01:focus,
+.thumbnail01.active {
+  border-color: #249869;
+}
+.thumbnail01 .caption {
+  padding: 5px;
+  color: #333;
+}
+.thumbnail01 .caption :hover{
+  padding: 5px;
+  color: #fff;
+}

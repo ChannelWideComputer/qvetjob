@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700');
+.tabel1{
+	padding-top: 0px;
+	padding-bottom: 50px;
+}
+
+.tween{
+	padding-top: 0px;
+	padding-bottom: 7px;
+
+}
+
+.dot{
+    list-style: none;
+}
+
+.tween02{
+	padding-top: 30px;
+	padding-bottom: 20px;
+
+}
+
+.tween03{
+    letter-spacing: 3px;  /*ระยะห่าง*/
+
+}
+
+
+.tweenlinehight{
+    line-height: 72px;
+
+}
+
+.tween04{
+    letter-spacing: 5px;
+}
+
+.b01{
+    font-weight: bold;  /*ตัวหนา*/
+}
+
+
+
+.fontsiz{
+    font-size: 50px;
+}
+.iftext{
+	color: #000000;
+}
+.backwhite{
+    background: rgba(255, 255, 255, 0.78);
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
+.bghead{
+	background: #ffffff;
+}
+
+.nav1{
+	background: #eeeeee;
+}
+.bgs01 {
+    background: url(../images/b01.png) no-repeat top center;
+    background-size: cover;
+    padding: 7px;
+}
+.bgp02 {
+    
+ background-attachment: fixed;
+ background-image: url(../images/bg.png);
+}
+
+.img01{
+    height: 80px;
+}
+
+.imgqua {
+    padding: 8px;
+}
+
+.bottom-map{
+
+    color: #fff;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e13eaf+0,6244bb+100 */
+    background: #f00; /* Old browsers */
+
+    padding: 0px 15px;
+    font-size: 17px;
+    
+}
+
+.colorfont{
+    color: #626262;
+    letter-spacing: 0px;
+    line-height: 42px;   /*ความห่างบรรทัดบน และ ล่าง*/
+}
+
+.colorfont02{
+    color: #000000;
+}
+
+.bgfont{
+    background-color: #f9700e;
+}
+.eve-700{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 700;
+}
+
+
+
+@media(max-width:1024px){
+
+}
+@media(max-width:768px){
+ .bgtvs {
+    background:none;
+}
+}
+@media(max-width:414px){
+
+}
+
+@media(max-width:768px){
+ .bgtvs02 {
+    background:none;
+}
+
+
+
+

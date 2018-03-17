@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt:300');
+#map-wrapper{border:1px solid #dddddd;}
+#map{height:250px;width:100%;}
+
+
+.jonojut{
+	list-style: none;
+}
+
+.jo-pictures{
+	background: url(../images/banner1.jpg)  -100px no-repeat fixed; padding: 70px 0px; 
+}
+.jo-pictures1{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	padding: 0 0 0 0px;
+	background: url(../images/banner3.jpg?v=1001) top center no-repeat; 
+	width: 100%;
+}
+
+
+.jo-pictures2{
+	width: 100%;
+	height: 625px;
+	background-image: url(../images/banner3.jpg?v=1001);
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
+
+}
+
+.jo-padding4 {
+	background-color: #57b610;
+	color: #ff002a;  
+}
+
+.margin-top1{
+	margin-top: 10px;
+}
+.margin-left1{
+	font-size: 16px; margin-left: 100px;
+}
+.position1{
+	position: relative;z-index: -1px; margin-left: -60px;
+}
+.position2{
+	position: relative;z-index: -1px; margin-left: 140px; height: 100px; margin-top: 10px;
+}
+
+
+
+
+
+.container-img {
+  position: relative;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 152, 0, 0.9);
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  transition: .5s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container-img:hover .overlay {
+  height: 100%;
+}
+
+.text {
+  white-space: nowrap; 
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.hvr-menu {
+   display: inline-block;
+   vertical-align: middle;
+   -webkit-transform: translateZ(0);
+   transform: translateZ(0);
+   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+   -webkit-backface-visibility: hidden;
+   backface-visibility: hidden;
+   -moz-osx-font-smoothing: grayscale;
+   position: relative;
+   -webkit-transition-property: color;
+   transition-property: color;
+   -webkit-transition-duration: 1s;
+   transition-duration: 1s;
+}
+.hvr-menu:hover:before, .hvr-menu:focus:before, .hvr-menu:active:before {
+   -webkit-transform: scaleX(1);
+   transform: scaleX(1);
+   -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+   transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+}
+.hvr-menu:before {
+   content: "";
+   position: absolute;
+   z-index: -1;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: #57b610;
+   -webkit-transform: scaleX(0);
+   transform: scaleX(0);
+   -webkit-transform-origin: 50% 0;
+   transform-origin: 50% 0;
+   -webkit-transition-property: transform;
+   transition-property: transform;
+   -webkit-transition-duration: 1s;
+   transition-duration: 1s;
+   -webkit-transition-timing-function: ease-out;
+   transition-timing-function: ease-out;
+}
+
+.hvr-menusky {
+   display: inline-block;
+   vertical-align: middle;
+   -webkit-transform: translateZ(0);
+   transform: translateZ(0);
+   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+   -webkit-backface-visibility: hidden;
+   backface-visibility: hidden;
+   -moz-osx-font-smoothing: grayscale;
+   position: relative;
+   -webkit-transition-property: color;
+   transition-property: color;
+   -webkit-transition-duration: 1s;
+   transition-duration: 1s;
+}
+.hvr-menusky:hover:before, .hvr-menusky:focus:before, .hvr-menusky:active:before {
+   -webkit-transform: scaleY(1);
+   transform: scaleY(1);
+   -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+   transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+}
+.hvr-menusky:before {
+   content: "";
+   position: absolute;
+   z-index: -1;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: #57b610;
+   -webkit-transform: scaleY(0);
+   transform: scaleY(0);
+   -webkit-transform-origin: 50% 0;
+   transform-origin: 50% 0;
+   -webkit-transition-property: transform;
+   transition-property: transform;
+   -webkit-transition-duration: 1s;
+   transition-duration: 1s;
+   -webkit-transition-timing-function: ease-out;
+   transition-timing-function: ease-out;
+}
+
+
+@media(max-width:1200px){
+
+}
+
+@media(max-width:1024px){
+
+}
+@media(max-width:768px){
+	
+}
+@media(max-width:414px){
+
